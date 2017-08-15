@@ -1,0 +1,119 @@
+
+.classroom-info-card {
+    @extend .paper-flat;
+    
+    padding: 0;
+    background: #fafafa;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    margin: 25px 15px;
+    align-self: stretch;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 400px;
+    width: 350px;
+
+    &__image {
+        background-image: url('/background_card.svg');
+        background-size: cover;
+        position: relative;
+        margin-bottom: 10px;
+        height: 250px;
+        width: 100%;
+    }
+
+    &__teacher, &__toolbar, &__description, &__title {
+        margin-left: 20px;
+        margin-right: 20px;
+        padding: 7px;
+    }
+    
+    &__title {
+        font-size: 1.2em;
+        font-family: Roboto;
+        font-weight: 500;
+        white-space: nowrap;
+        line-height: 14px;
+        text-overflow: ellipsis;
+        width: 90%;
+        overflow: hidden;
+    }
+
+    h2 {
+        font-size: 1.0em;
+        text-align: start;
+    }
+
+
+    p {
+        text-align: start;
+    }
+
+    &__teacher {
+        text-align: start;
+    }
+
+    &__toolbar {
+        //border-top: 1px solid #ccc;
+        padding: 10px;
+        text-align: right;
+        //background: #eee;
+    }
+
+    &__description {
+        height: 100px;
+        overflow: hidden;
+    }
+}
+
+
+.classroom-info-card:hover {
+    @extend .paper;
+}
+
+.long-description {
+    margin-top: 1em;
+    margin-bottom: 2em;
+}
+
+
+.classroom-lesson {
+    @extend .paper-flat;
+
+    padding: 20px;
+    margin: 20px;
+    background: $color-salmon-light;
+    
+    
+    h1 {
+        font-family: Roboto;
+        font-size: 1.2em;
+    }
+
+    &__date {
+        float: right;
+        font-size: 0.9em;
+        font-weight: normal;
+    }
+    
+}
+
+
+.classroom-lesson:hover {
+    @extend .paper;
+}
+
+
+@media only screen and (min-width: $breakpoint-large-screen) {
+    .classroom-info-list {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .classroom-info-card {
+        flex: 1;
+        min-width: 40%;
+    }
+}

@@ -1,0 +1,57 @@
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 50%;
+    margin: 0px auto;
+}
+
+.item-form {
+    width: 300px;
+    margin: 10px;
+}
+
+
+.select-item {
+  width: 300px;
+}
+
+.disabled-item {
+  display: none;
+}
+
+
+
+.date-form {
+  display: flex;
+  flex-direction: row;
+  width: 300px;
+  margin: 10px;
+  justify-content: space-between;
+}
+
+.date-month {
+  width: 90px;
+}
+
+.date-item {
+  width: 90px;
+  height: 47px;
+  align-self: center;
+}
+
+.form-title {
+    font-family: "Amatic SC";
+    font-size: 3.5em;
+    font-weight: bold;
+    margin-right: 20%;
+}
+
+.submit-button {
+    margin: 10px;
+    background-color: $color-teal;
+    color: white;
+    border-radius: 5px;
+    width: 50%;
+}

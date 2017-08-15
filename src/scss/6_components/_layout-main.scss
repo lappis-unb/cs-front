@@ -1,0 +1,15 @@
+.main-content{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 40px;
+  padding: 0;
+}
+
+@media (max-width: $breakpoint-large-screen) {
+  .main-content{
+    margin-left: 0;
+  }
+
+}
