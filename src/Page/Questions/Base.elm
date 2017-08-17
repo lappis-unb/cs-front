@@ -7,8 +7,6 @@ import Codeschool.Model exposing (Model)
 import Data.Question exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Polymer.Attributes exposing (icon)
-import Polymer.Paper as Paper exposing (button, fab)
 import Ui.Generic exposing (container, date, emoticon)
 import Ui.Parts exposing (promoSimple, promoTable, simpleHero)
 

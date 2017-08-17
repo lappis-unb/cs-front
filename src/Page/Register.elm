@@ -6,7 +6,6 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (on, onClick, onInput, onSubmit)
 import Json.Decode as Json
-import Polymer.Paper exposing (button)
 import Ui.Parts exposing (promoSimple, promoTable, simpleHero)
 
 
@@ -104,7 +103,7 @@ view model =
             , div [ class "item-form" ]
                 [ textarea [ maxlength 500, placeholder "About me", onInput (Msg.UpdateRegister "about_me") ] []
                 ]
-            , Polymer.Paper.button [ class "submit-button", onClick Msg.DispatchUserRegistration ] [ text "Submit" ]
+            , button [ class "submit-button", onClick Msg.DispatchUserRegistration ] [ text "Submit" ]
             ]
         ]
 

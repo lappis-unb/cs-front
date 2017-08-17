@@ -7,8 +7,6 @@ import Data.Classroom exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Misc.Util exposing (closestDate)
-import Polymer.Attributes exposing (icon)
-import Polymer.Paper as Paper exposing (button, fab)
 import Ui.Generic exposing (date, emoticon)
 import Ui.Parts exposing (promoSimple, promoTable, simpleHero)
 
@@ -66,7 +64,7 @@ classroomInfo cls =
             [ text cls.shortDescription
             ]
         , div [ class "classroom-info-card__toolbar" ]
-            [ Paper.button
+            [ button
                 [ attribute "raised" "raised" ]
                 [ text "Go" ]
             ]

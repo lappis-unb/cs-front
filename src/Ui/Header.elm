@@ -8,7 +8,6 @@ import Codeschool.Msg as Msg exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Polymer.Paper as Paper exposing (..)
 import Ui.Generic exposing (icon, zindex)
 
 
@@ -18,39 +17,39 @@ header : Model -> Html Msg
 header model =
     let
         link route txt =
-            Paper.button
+            button
                 [ onClick (ChangeRoute route)
                 , slot "top"
                 , class "page-header__link"
                 ]
-                [ div [] [ text txt ] ]
+                [ text txt ]
 
         slot =
             attribute "slot"
 
-        button =
-            fab [ class "page-header__user-menu" ] [ icon [] "person" ]
+        --button =
+        --    span [ class "page-header__user-menu" ] [ icon [] "person" ]
 
         userMenu =
-            menuButton
+            div
                 [ class "page-header__user-menu"
                 , attribute "horizontal-align" "right"
                 , attribute "horizontal-offset" "-0"
                 , attribute "vertical-offset" "80"
                 ]
-                [ fab
+                [ span
                     [ slot "dropdown-trigger"
                     , class "page-header__user-menu-button"
                     , attribute "mini" "mini"
                     , attribute "label" " ツ "
                     ]
                     []
-                , listbox [ slot "dropdown-content", class "page-header__user-menu-content" ]
+                , div [ slot "dropdown-content", class "page-header__user-menu-content" ]
                     [ div [ class "page-header__user-menu-icon" ] [ icon [] "person" ]
                     , div [ class "page-header__user-menu-title" ] [ h1 [] [ text "Actions" ] ]
-                    , item [ onClick (ChangeRoute (Register)) ] [ text "Register" ]
-                    , item [ onClick (ChangeRoute (Profile model.user.id)) ] [ text "Profile" ]
-                    , item [ href "/logout/" ] [ text "Logout" ]
+                    , span [ onClick (ChangeRoute (Register)) ] [ text "Register" ]
+                    , span [ onClick (ChangeRoute (Profile model.user.id)) ] [ text "Profile" ]
+                    , span [ href "/logout/" ] [ text "Logout" ]
                     ]
                 ]
 
@@ -62,13 +61,13 @@ header model =
 
 
         mobileMenu =
-            menuButton
+            div
                 [ class "page-header__user-menu"
                 , attribute "horizontal-align" "right"
                 , attribute "horizontal-offset" "-0"
                 , attribute "vertical-offset" "80"
                 ]
-                [ fab
+                [ span
                     [ slot "dropdown-trigger"
                     , class "mobile-button"
                     , attribute "mini" "mini"
