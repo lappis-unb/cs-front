@@ -6,7 +6,8 @@ header {
 
 
 .page-logo {
-  margin: 0 auto auto 25px;
+  margin-left: 25px;
+  // margin-right: auto;
 }
 
 
@@ -19,36 +20,40 @@ header {
     width: 100%;
     height: 110px;
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    justify-content: space-between;
 
     box-shadow:
     &__notification,
     &__link {
-        color: #444;
+        color: black;
         margin: 0;
 
     }
 
-    &__user-menu-content__sidebar {
-      display: none;
-    }
+    // &__user-menu-content__sidebar {
+    //   display: none;
+    // }
 
     &__link {
         text-decoration: none;
         font: 1.9em 'Amatic SC', cursive;
         font-weight: bold;
+        color: black;
         height: 100%;
-        margin: 0;
-
-        :host slot {
-            margin: 0;
-        }
+        width: 150px;
+        align-self: flex-start;
+        background-color: #fafafa;
+        margin-right: 3%;
     }
 
-    &__notification {
-        margin: 15px;
+    &__link:first-of-type {
+         margin-left: auto;
     }
+    &__link:last-of-type {
+         margin-right: 60px;
+    }
+
+
 
     @keyframes linkdarken {
         from {background-color: white;}
@@ -79,17 +84,7 @@ header {
             @extend .paper;
         }
     }
-    &__user-menu-button {
-        border-radius: 50%;
-        color: white;
-        background-color: $color-green !important;
 
-        .dropdown-trigger {
-            font: 1.7em 'Amatic SC', cursive;
-            font-weight: bold;
-            color: white;
-        }
-    }
 
     &__user-menu-icon {
         text-align: center;
@@ -109,10 +104,30 @@ header {
         }
     }
 
-    &__user-menu-button:hover {
-        background-color: lighten($color-green, 5) !important;
-    }
+
 }
+
+
+.user-menu-button {
+  border-radius: 50%;
+  color: white;
+  background-color: $color-green !important;
+}
+
+.user-menu-button:hover {
+    background-color: lighten($color-green, 5) !important;
+}
+
+.user-menu-button-content {
+  margin-top: 10px;
+  display: none;
+  background-color: red;
+}
+
+.user-menu-button:hover .user-menu-button-content  {
+    display: block;
+}
+
 
 .mobile-button{
   display: none;
@@ -162,7 +177,7 @@ header {
     }
 
     &__user-menu-content {
-        display: flex;
+        display: none;
         flex-direction: column;
         align-items: flex-start;
         flex-wrap: nowrap;
@@ -172,6 +187,10 @@ header {
           display: inherit;
           flex-direction: column;
         }
+    }
+
+    &__user-menu-content:hover {
+      display: flex;
     }
 
 

@@ -33,25 +33,26 @@ header model =
         userMenu =
             div
                 [ class "page-header__user-menu"
-                , attribute "horizontal-align" "right"
-                , attribute "horizontal-offset" "-0"
-                , attribute "vertical-offset" "80"
                 ]
-                [ span
-                    [ slot "dropdown-trigger"
-                    , class "page-header__user-menu-button"
-                    , attribute "mini" "mini"
-                    , attribute "label" " ツ "
+                [ div
+                    [ class "user-menu-button"
                     ]
-                    []
-                , div [ slot "dropdown-content", class "page-header__user-menu-content" ]
-                    [ div [ class "page-header__user-menu-icon" ] [ icon [] "person" ]
-                    , div [ class "page-header__user-menu-title" ] [ h1 [] [ text "Actions" ] ]
-                    , span [ onClick (ChangeRoute (Register)) ] [ text "Register" ]
-                    , span [ onClick (ChangeRoute (Profile model.user.id)) ] [ text "Profile" ]
-                    , span [ href "/logout/" ] [ text "Logout" ]
+                    [ span [] [text "Hi!"]
+                    , div [ class "user-menu-button-content" ]
+                          [ div [ class "page-header__user-menu-icon" ] [ icon [] "person" ]
+                          , div [ class "page-header__user-menu-title" ] [ h1 [] [ text "Actions" ] ]
+                          , span [ onClick (ChangeRoute (Register)) ] [ text "Register" ]
+                          , span [ onClick (ChangeRoute (Profile model.user.id)) ] [ text "Profile" ]
+                          , span [ href "/logout/" ] [ text "Logout" ]
+                          ]
                     ]
                 ]
+
+                -- div [ class "page-header__user-menu-icon" ] [ icon [] "person" ]
+                -- , div [ class "page-header__user-menu-title" ] [ h1 [] [ text "Actions" ] ]
+                -- , span [ onClick (ChangeRoute (Register)) ] [ text "Register" ]
+                -- , span [ onClick (ChangeRoute (Profile model.user.id)) ] [ text "Profile" ]
+                -- , span [ href "/logout/" ] [ text "Logout" ]
 
         fabOnClick =
           if model.route == Actions then
