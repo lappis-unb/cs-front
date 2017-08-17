@@ -2,7 +2,7 @@
     "version": "1.0.0",
     "summary": "Codeschool Learning Management System",
     "repository": "https://github.com/cslms/cs-server.git",
-    "license": "MIT",
+    "license": "GPL-3.0",
     "source-directories": [
         "src/"
     ],
