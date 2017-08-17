@@ -50,7 +50,7 @@ header {
          margin-left: auto;
     }
     &__link:last-of-type {
-         margin-right: 60px;
+         margin-right: 20px;
     }
 
 
@@ -73,30 +73,16 @@ header {
     }
 
 
-    &__user-menu {
-        paper-listbox {
-            min-width: 250px;
-        }
-    }
-
-    &__user-menu {
-        paper-listbox {
-            @extend .paper;
-        }
-    }
-
-
     &__user-menu-icon {
         text-align: center;
         background-color: #eee;
         margin-top: -8px;
         i {
-            font-size: 3em;
+            font-size: 2em;
         }
     }
 
     &__user-menu-title {
-        min-width: 120px;
         margin: 10px;
         h1 {
             font-size: 1.2em;
@@ -104,29 +90,57 @@ header {
         }
     }
 
+    &__special-buttons {
+      display: flex;
+      background-color: #fafafa;
+      align-items: center;
+      justify-content: space-between;
+      width: 10%;
+    }
+
+    &__notification {
+      background-color: transparent;
+
+    }
 
 }
 
 
-.user-menu-button {
-  border-radius: 50%;
-  color: white;
-  background-color: $color-green !important;
+.dropdown {
+    position: relative;
+    display: flex;
+    background-color: #fafafafa;
+    width: 80px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+
 }
 
-.user-menu-button:hover {
-    background-color: lighten($color-green, 5) !important;
+.dropdown-content {
+    display: none;
+    position: fixed;
+    background-color: #f9f9f9;
+    min-width: 30px;
+    box-shadow: 0px 4px 8px 0px black;
+    padding: 12px 16px;
+    z-index: 1;
+    margin-top: 15%;
 }
 
-.user-menu-button-content {
-  margin-top: 10px;
-  display: none;
-  background-color: red;
+.dropdown:hover .dropdown-content {
+    display: flex;
+    flex-direction: column;
 }
 
-.user-menu-button:hover .user-menu-button-content  {
-    display: block;
-}
+// .dropdown-text {
+//   font: 6em 'Amatic SC', cursive;
+//   align-self:
+// }
+
+// .user-menu-button-text {
+//   margin-left: 5px;
+// }
 
 
 .mobile-button{
@@ -170,11 +184,7 @@ header {
     }
 
 
-    &__user-menu {
-        paper-listbox {
-            min-width: 250px;
-        }
-    }
+
 
     &__user-menu-content {
         display: none;

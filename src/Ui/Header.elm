@@ -5,9 +5,12 @@ module Ui.Header exposing (..)
 
 import Codeschool.Model exposing (..)
 import Codeschool.Msg as Msg exposing (..)
+import Color exposing (black, blue)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Material.Icons.Action
+import Material.Icons.Navigation exposing (more_horiz)
 import Ui.Generic exposing (icon, zindex)
 
 
@@ -31,28 +34,31 @@ header model =
         --    span [ class "page-header__user-menu" ] [ icon [] "person" ]
 
         userMenu =
-            div
-                [ class "page-header__user-menu"
-                ]
-                [ div
-                    [ class "user-menu-button"
-                    ]
-                    [ span [] [text "Hi!"]
-                    , div [ class "user-menu-button-content" ]
-                          [ div [ class "page-header__user-menu-icon" ] [ icon [] "person" ]
+                div [class "dropdown"]
+                    [ Material.Icons.Navigation.menu black 32
+                    , div [class "dropdown-content"]
+                          [ div [class "page-header__user-menu-icon"] [ Material.Icons.Action.perm_identity black 32 ]
                           , div [ class "page-header__user-menu-title" ] [ h1 [] [ text "Actions" ] ]
                           , span [ onClick (ChangeRoute (Register)) ] [ text "Register" ]
                           , span [ onClick (ChangeRoute (Profile model.user.id)) ] [ text "Profile" ]
                           , span [ href "/logout/" ] [ text "Logout" ]
                           ]
                     ]
-                ]
+                --  button
+                --     [ class "user-menu-button"
+                --     ]
+                --     [ text "B"
+                --     , div [ class "user-menu-button-content" ]
+                --           [ text "hi"
+                --           ]
+                --     ]
 
-                -- div [ class "page-header__user-menu-icon" ] [ icon [] "person" ]
-                -- , div [ class "page-header__user-menu-title" ] [ h1 [] [ text "Actions" ] ]
-                -- , span [ onClick (ChangeRoute (Register)) ] [ text "Register" ]
-                -- , span [ onClick (ChangeRoute (Profile model.user.id)) ] [ text "Profile" ]
-                -- , span [ href "/logout/" ] [ text "Logout" ]
+
+--
+-- , div [ class "page-header__user-menu-title" ] [ h1 [] [ text "Actions" ] ]
+-- , span [ onClick (ChangeRoute (Register)) ] [ text "Register" ]
+-- , span [ onClick (ChangeRoute (Profile model.user.id)) ] [ text "Profile" ]
+-- , span [ href "/logout/" ] [ text "Logout" ]
 
         fabOnClick =
           if model.route == Actions then
