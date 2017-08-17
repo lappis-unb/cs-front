@@ -1,8 +1,10 @@
 var path = require("path");
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+
 var ELM_PROD_ENV = JSON.parse(process.env.ELM_PROD_ENV || false);
 
-module.exports = {
+var webpackConfig = {
     entry: {
         app: [
             './public/index.js'
@@ -26,15 +28,6 @@ module.exports = {
                     loader: "sass-loader" // compiles Sass to CSS
                 }]
             },
-            /*
-            {
-                test: /\.(css)$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                ]
-            },
-            */
 
             {
                 test: /\.html$/,
@@ -42,14 +35,6 @@ module.exports = {
                 loader: 'file-loader?name=[name].[ext]',
             },
 
-            /*
-            {
-                test: /\.html$/,
-                use: {
-                    loader: 'polymer-webpack-loader',
-                }
-            },
-            */
             {
                 test: /\.elm$/,
                 exclude: [/elm-stuff/, /node_modules/],
@@ -80,7 +65,25 @@ module.exports = {
         stats: { colors: true },
     },
 
-    plugins: ELM_PROD_ENV ? [
-        new UglifyJSPlugin()
-    ] : []
+    plugins: [
+        new CopyWebpackPlugin([
+            {
+                context: 'public',
+                from:  'static/**/*',
+                to: path.join(__dirname, 'dist')
+            },
+
+            {
+                context: 'public',
+                from:  'favicon.ico',
+                to: path.join(__dirname, 'dist')
+            }
+        ])
+    ]
 };
+
+if (ELM_PROD_ENV) {
+    webpackConfig.plugins.push(new UglifyJSPlugin());
+}
+
+module.exports = webpackConfig;

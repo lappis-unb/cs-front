@@ -5,6 +5,8 @@ src/master.zip
 src/scss/main.css
 _build
 node_modules
+bower_components
+dist
 elm-stuff
 public/bower_components
 src/scss/.sass-cache/
