@@ -24,8 +24,8 @@
     "webpack-dev-server": "^2.7.1"
   },
   "scripts": {
-    "postinstall": "./node_modules/elm/binwrappers/elm-package install",
+    "postinstall": "./node_modules/elm/binwrappers/elm-package install -y",
     "build": "export ELM_PROD_ENV=true && webpack",
-    "dev": "export ELM_PROD_ENV=false && webpack-dev-server --port 4000"
+    "dev": "export ELM_PROD_ENV=false && webpack-dev-server"
   }
 }

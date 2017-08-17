@@ -62,7 +62,9 @@ var webpackConfig = {
 
     devServer: {
         inline: true,
+        overlay: true,
         stats: { colors: true },
+        port: 4000
     },
 
     plugins: [
