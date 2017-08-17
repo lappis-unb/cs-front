@@ -11,7 +11,7 @@ module.exports = {
 
     output: {
         path: path.resolve(__dirname + '/dist'),
-        filename: '[name].js',
+        filename: '[name].bundle.js',
     },
 
     module: {
@@ -35,11 +35,21 @@ module.exports = {
                 ]
             },
             */
+
             {
                 test: /\.html$/,
                 exclude: /node_modules/,
                 loader: 'file-loader?name=[name].[ext]',
             },
+
+            /*
+            {
+                test: /\.html$/,
+                use: {
+                    loader: 'polymer-webpack-loader',
+                }
+            },
+            */
             {
                 test: /\.elm$/,
                 exclude: [/elm-stuff/, /node_modules/],
