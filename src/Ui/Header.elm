@@ -30,9 +30,6 @@ header model =
         slot =
             attribute "slot"
 
-        --button =
-        --    span [ class "page-header__user-menu" ] [ icon [] "person" ]
-
         userMenu =
                 div [class "dropdown"]
                     [ Material.Icons.Navigation.menu black 32
@@ -44,21 +41,7 @@ header model =
                           , span [ href "/logout/" ] [ text "Logout" ]
                           ]
                     ]
-                --  button
-                --     [ class "user-menu-button"
-                --     ]
-                --     [ text "B"
-                --     , div [ class "user-menu-button-content" ]
-                --           [ text "hi"
-                --           ]
-                --     ]
 
-
---
--- , div [ class "page-header__user-menu-title" ] [ h1 [] [ text "Actions" ] ]
--- , span [ onClick (ChangeRoute (Register)) ] [ text "Register" ]
--- , span [ onClick (ChangeRoute (Profile model.user.id)) ] [ text "Profile" ]
--- , span [ href "/logout/" ] [ text "Logout" ]
 
         fabOnClick =
           if model.route == Actions then
@@ -68,21 +51,28 @@ header model =
 
 
         mobileMenu =
-            div
-                [ class "page-header__user-menu"
-                , attribute "horizontal-align" "right"
-                , attribute "horizontal-offset" "-0"
-                , attribute "vertical-offset" "80"
-                ]
-                [ span
-                    [ slot "dropdown-trigger"
-                    , class "mobile-button"
-                    , attribute "mini" "mini"
-                    , attribute "label" " ツ "
-                    , fabOnClick
+                div [ fabOnClick, class "mobile-button"]
+                    [ Material.Icons.Navigation.menu black 32
+                    , div [  ]
+                          []
                     ]
-                    []
-                ]
+
+
+            -- div
+            --     [ class "page-header__user-menu"
+            --     , attribute "horizontal-align" "right"
+            --     , attribute "horizontal-offset" "-0"
+            --     , attribute "vertical-offset" "80"
+            --     ]
+            --     [ span
+            --         [ slot "dropdown-trigger"
+            --         , class "mobile-button"
+            --         , attribute "mini" "mini"
+            --         , attribute "label" " ツ "
+            --         , fabOnClick
+            --         ]
+            --         []
+            --     ]
 
         header =
             div

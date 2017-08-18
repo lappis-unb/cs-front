@@ -5,8 +5,6 @@ import Codeschool.Msg as Msg exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Navigation exposing (back)
-import Ui.Generic exposing (..)
 import Ui.Sidebar exposing (sidebar)
 
 view : Model -> Html Msg

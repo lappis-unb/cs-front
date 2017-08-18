@@ -30,9 +30,9 @@ header {
 
     }
 
-    // &__user-menu-content__sidebar {
-    //   display: none;
-    // }
+    &__user-menu-content__sidebar {
+      display: none;
+    }
 
     &__link {
         text-decoration: none;
@@ -95,7 +95,7 @@ header {
       background-color: #fafafa;
       align-items: center;
       justify-content: space-between;
-      width: 10%;
+      width: 100px;
     }
 
     &__notification {
@@ -114,6 +114,7 @@ header {
     height: 40px;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 
 }
 
@@ -148,11 +149,20 @@ header {
 
   &__fonts {
     font-family: "Roboto";
-    font-size: 1em;
+    margin-bottom: 3px;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: black;
+    margin-bottom: 20px;
   }
 
+  &__fonts:first-of-type {
+    margin-top: 20px;
+  }
+
+
   &__item:Hover {
-    cursor: pointer;
+    cursor: pointer
   }
 
   &__fonts-title {
@@ -160,6 +170,8 @@ header {
     font-weight: bold;
     margin-left: 20px;
   }
+
+
 
 }
 
@@ -179,15 +191,24 @@ header {
     align-items: center;
     justify-content: flex-end;
 
+    .dropdown {
+      display: none;
+    }
+
+
     &__link {
       display: none;
     }
 
 
-
+    &__user-menu {
+        paper-listbox {
+            min-width: 250px;
+        }
+    }
 
     &__user-menu-content {
-        display: none;
+        display: flex;
         flex-direction: column;
         align-items: flex-start;
         flex-wrap: nowrap;
@@ -197,10 +218,6 @@ header {
           display: inherit;
           flex-direction: column;
         }
-    }
-
-    &__user-menu-content:hover {
-      display: flex;
     }
 
 
@@ -222,12 +239,21 @@ header {
 
   .mobile-button{
     display: flex;
-    background-color: $color-red !important;
+    background-color: transparent;
     margin-bottom: 5px;
+
+    &__fonts:first-of-type {
+      margin-top: 0px;
+    }
 
     &__fonts {
       font-family: "Roboto";
       font-size: 1em;
+      margin-bottom: 28px;
+    }
+
+    &__item:first-of-type {
+      margin-top: 15px;
     }
 
     &__item:Hover {
