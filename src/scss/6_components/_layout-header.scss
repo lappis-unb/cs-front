@@ -6,7 +6,9 @@ header {
 
 
 .page-logo {
-  margin: 0 auto auto 25px;
+  margin-left: 25px;
+  cursor: pointer;
+  // margin-right: auto;
 }
 
 
@@ -19,13 +21,12 @@ header {
     width: 100%;
     height: 110px;
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    justify-content: space-between;
 
     box-shadow:
     &__notification,
     &__link {
-        color: #444;
+        color: black;
         margin: 0;
 
     }
@@ -38,17 +39,22 @@ header {
         text-decoration: none;
         font: 1.9em 'Amatic SC', cursive;
         font-weight: bold;
+        color: black;
         height: 100%;
-        margin: 0;
-
-        :host slot {
-            margin: 0;
-        }
+        width: 150px;
+        align-self: flex-start;
+        background-color: #fafafa;
+        margin-right: 3%;
     }
 
-    &__notification {
-        margin: 15px;
+    &__link:first-of-type {
+         margin-left: auto;
     }
+    &__link:last-of-type {
+         margin-right: 20px;
+    }
+
+
 
     @keyframes linkdarken {
         from {background-color: white;}
@@ -68,40 +74,16 @@ header {
     }
 
 
-    &__user-menu {
-        paper-listbox {
-            min-width: 250px;
-        }
-    }
-
-    &__user-menu {
-        paper-listbox {
-            @extend .paper;
-        }
-    }
-    &__user-menu-button {
-        border-radius: 50%;
-        color: white;
-        background-color: $color-green !important;
-
-        .dropdown-trigger {
-            font: 1.7em 'Amatic SC', cursive;
-            font-weight: bold;
-            color: white;
-        }
-    }
-
     &__user-menu-icon {
         text-align: center;
         background-color: #eee;
         margin-top: -8px;
         i {
-            font-size: 3em;
+            font-size: 2em;
         }
     }
 
     &__user-menu-title {
-        min-width: 120px;
         margin: 10px;
         h1 {
             font-size: 1.2em;
@@ -109,21 +91,79 @@ header {
         }
     }
 
-    &__user-menu-button:hover {
-        background-color: lighten($color-green, 5) !important;
+    &__special-buttons {
+      display: flex;
+      background-color: #fafafa;
+      align-items: center;
+      justify-content: space-between;
+      width: 100px;
     }
+
+    &__notification {
+      background-color: transparent;
+
+    }
+
 }
+
+
+.dropdown {
+    position: relative;
+    display: flex;
+    background-color: #fafafafa;
+    width: 80px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+}
+
+.dropdown-content {
+    display: none;
+    position: fixed;
+    background-color: #f9f9f9;
+    min-width: 30px;
+    box-shadow: 0px 4px 8px 0px black;
+    padding: 12px 16px;
+    z-index: 1;
+    margin-top: 5%;
+}
+
+.dropdown:hover .dropdown-content {
+    display: flex;
+    flex-direction: column;
+}
+
+// .dropdown-text {
+//   font: 6em 'Amatic SC', cursive;
+//   align-self:
+// }
+
+// .user-menu-button-text {
+//   margin-left: 5px;
+// }
+
 
 .mobile-button{
   display: none;
 
   &__fonts {
     font-family: "Roboto";
-    font-size: 1em;
+    margin-bottom: 3px;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: black;
+    margin-bottom: 20px;
   }
 
+  &__fonts:first-of-type {
+    margin-top: 20px;
+  }
+
+
   &__item:Hover {
-    cursor: pointer;
+    cursor: pointer
   }
 
   &__fonts-title {
@@ -131,6 +171,8 @@ header {
     font-weight: bold;
     margin-left: 20px;
   }
+
+
 
 }
 
@@ -149,6 +191,11 @@ header {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+
+    .dropdown {
+      display: none;
+    }
+
 
     &__link {
       display: none;
@@ -193,12 +240,21 @@ header {
 
   .mobile-button{
     display: flex;
-    background-color: $color-red !important;
+    background-color: transparent;
     margin-bottom: 5px;
+
+    &__fonts:first-of-type {
+      margin-top: 0px;
+    }
 
     &__fonts {
       font-family: "Roboto";
       font-size: 1em;
+      margin-bottom: 28px;
+    }
+
+    &__item:first-of-type {
+      margin-top: 15px;
     }
 
     &__item:Hover {
