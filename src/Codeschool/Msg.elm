@@ -6,7 +6,7 @@ module Codeschool.Msg exposing (..)
 import Codeschool.Model exposing (Model, Route)
 import Codeschool.Routing exposing (parseLocation, reverse)
 import Data.Date exposing (..)
-import Data.User exposing (User, UserError, toJson, userDecoder, userErrorDecoder)
+import Data.User exposing (..)
 import Http exposing (..)
 import Json.Decode exposing (string)
 import Json.Decode.Pipeline exposing (decode, required)
@@ -25,6 +25,8 @@ type Msg
     | RequestReceiver (Result Http.Error User)
     | UpdateDate String String
     | UpdateUserDate
+    | GetUserProfile (Result Http.Error LoggedUser)
+    | DispatchUserProfile
 
 {-| Update function
 -}
@@ -100,6 +102,50 @@ update msg model =
         RequestReceiver (Err _) ->
           Debug.log "#DeuRuim de vez"
           (model, Cmd.none)
+
+        GetUserProfile (Ok data)->
+          Debug.log "OK OK"
+          Debug.log(toString data)
+          ({ model | loggedUser = data }, Cmd.none)
+
+        GetUserProfile (Err (BadStatus data)) ->
+          Debug.log "badstatus"
+          Debug.log(toString data)
+          (model, Cmd.none)
+
+        GetUserProfile (Err (BadPayload data response)) ->
+          Debug.log "badpayload"
+          Debug.log(toString data)
+          (model, Cmd.none)
+
+        GetUserProfile _ ->
+          Debug.log "fail"
+          (model, Cmd.none)
+
+
+        DispatchUserProfile ->
+          let
+              data = getProfileData
+          in
+              (model, data)
+
+
+-- testing
+getProfileData : Cmd Msg
+getProfileData =
+    let
+        getProfileData =
+            Http.request
+                { body = Http.emptyBody
+                , expect = Http.expectJson loggedUserDecoder
+                , headers = []
+                , method = "GET"
+                , timeout = Nothing
+                , url = "http://localhost:8000/api/users/2/" -- Change later
+                , withCredentials = False
+                }
+    in
+        getProfileData |> Http.send GetUserProfile
 
 
 

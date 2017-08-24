@@ -26,6 +26,7 @@ type alias Model =
     , date : Date
     , time : Time
     , toast : Toast String
+    , loggedUser : LoggedUser
     }
 
 
@@ -42,6 +43,7 @@ init =
     , date = testDate
     , time = 0
     , toast = Toast.initWithTransitionDelay (Time.second * 1.5)
+    , loggedUser = testLoggedUser
     }
 
 

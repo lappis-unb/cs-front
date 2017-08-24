@@ -21,6 +21,7 @@ import Codeschool.Sub as Sub
 import Codeschool.View as View
 import Html exposing (Html)
 import Navigation exposing (Location)
+import Platform.Cmd as Cmd exposing (batch)
 
 
 type alias Model =
@@ -33,7 +34,7 @@ type alias Msg =
 
 {-| Init codeschool model
 -}
-init : Location -> ( Model, Cmd msg )
+init : Location -> ( Model, Cmd Msg )
 init location =
     let
         route =
@@ -42,7 +43,7 @@ init location =
         model =
             Model.init
     in
-    ( { model | route = route }, Cmd.none )
+    ( { model | route = route }, batch [Msg.getProfileData] )
 
 
 {-| A view function for the site

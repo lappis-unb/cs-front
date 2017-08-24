@@ -38,6 +38,21 @@ type alias UserError =
     }
 
 
+type alias LoggedUser =
+    { url : String
+    , alias_ : String
+    , role: String
+    }
+
+
+testLoggedUser : LoggedUser
+testLoggedUser =
+  { url = "biribiri.com"
+  , alias_ = "wooo"
+  , role = "professor"
+  }
+
+
 testUser : User
 testUser =
     { name = "Anonymous"
@@ -65,6 +80,15 @@ testUserError =
     , birthday = []
     , about_me = []
     }
+
+
+loggedUserDecoder : Dec.Decoder LoggedUser
+loggedUserDecoder =
+    decode LoggedUser
+      |> required "url" Dec.string
+      |> required "alias" Dec.string
+      |> required "role" Dec.string
+
 
 userErrorDecoder : Dec.Decoder UserError
 userErrorDecoder =
