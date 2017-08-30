@@ -6,7 +6,7 @@ module Codeschool.Msg exposing (..)
 import Codeschool.Model exposing (Model, Route)
 import Codeschool.Routing exposing (parseLocation, reverse)
 import Data.Date exposing (..)
-import Data.User exposing (User, UserError, toJson, userDecoder, userErrorDecoder)
+import Data.User exposing (User, UserError, UserLogin, toJson, userDecoder, userErrorDecoder)
 import Http exposing (..)
 import Json.Decode exposing (string)
 import Json.Decode.Pipeline exposing (decode, required)
@@ -25,6 +25,7 @@ type Msg
     | RequestReceiver (Result Http.Error User)
     | UpdateDate String String
     | UpdateUserDate
+    | UpdateLogin String String
 
 {-| Update function
 -}
@@ -64,6 +65,12 @@ update msg model =
                 newUser = formReceiver model.user inputModel inputValue
             in
                 ({model | user = newUser}, Cmd.none)
+
+        UpdateLogin inputModel inputValue ->
+            let
+                newLogin = loginReceiver model.userLogin inputModel inputValue
+            in
+                ({model | userLogin = newLogin}, Cmd.none)
 
         UpdateUserDate ->
             let
@@ -144,6 +151,18 @@ dateReceiver date field value =
       _ ->
           date
 
+
+loginReceiver : UserLogin -> String -> String -> UserLogin
+loginReceiver userLogin inputModel inputValue =
+  case inputModel of
+    "email" ->
+        { userLogin | email = inputValue }
+
+    "password" ->
+        { userLogin | password = inputValue}
+
+    _ ->
+       userLogin
 
 formReceiver : User -> String -> String -> User
 formReceiver user inputModel inputValue =
