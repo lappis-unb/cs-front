@@ -24,6 +24,11 @@ type alias User =
     , about_me: String
     }
 
+type alias UserLogin =
+  { email: String
+  , password : String
+  }
+
 type alias UserError =
     { name : List String
     , alias_ : List String -- needed
@@ -51,6 +56,12 @@ testUser =
     , birthday = "none"
     , about_me = "none"
     }
+
+testLogin : UserLogin
+testLogin =
+  { email = ""
+  , password = ""
+  }
 
 testUserError : UserError
 testUserError =

@@ -19,6 +19,7 @@ import Toast exposing (Toast)
 type alias Model =
     { user : User
     , userError: UserError
+    , userLogin : UserLogin
     , route : Route
     , classroomInfoList : List ClassroomInfo
     , classroom : Maybe Classroom
@@ -35,6 +36,7 @@ init : Model
 init =
     { user = testUser
     , userError = testUserError
+    , userLogin = testLogin
     , route = Index
     , classroomInfoList = []
     , classroom = Nothing

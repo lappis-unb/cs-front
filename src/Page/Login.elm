@@ -16,5 +16,7 @@ view m =
                 [ input [ placeholder "E-mail", type_ "email" ] [] ]
               , div [ class "item-form" ]
                 [ input [ placeholder "Password",  type_ "password" ] [] ]
+              , button [ class "submit-button" ] [ text "Submit" ]  
               ]
+
         ]
