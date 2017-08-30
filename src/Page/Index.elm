@@ -24,6 +24,11 @@ view m =
                         If you are not registered, please click
                         """
                     , a [ onClick (ChangeRoute (Register)), style [("cursor", "pointer")] ] [ text "here" ]
+                    , text
+                        """
+                        . Otherwise, Log in
+                        """
+                    , a [ onClick (ChangeRoute (Login)), style [("cursor", "pointer")] ] [ text "here" ]
                     ]
                 , promoSimple "search"
                     "Discover"

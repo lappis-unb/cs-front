@@ -76,3 +76,4 @@ type Route
     | Logout
     | Actions
     | Register
+    | Login
