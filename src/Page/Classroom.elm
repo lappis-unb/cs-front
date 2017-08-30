@@ -9,6 +9,9 @@ import Html.Attributes exposing (..)
 import Misc.Util exposing (closestDate)
 import Ui.Generic exposing (date, emoticon)
 import Ui.Parts exposing (promoSimple, promoTable, simpleHero)
+import Html.Events exposing (onClick)
+import Codeschool.Msg as Msg exposing (..)
+import Codeschool.Model exposing (..)
 
 
 --------------------------------------------------------------------------------
@@ -16,7 +19,7 @@ import Ui.Parts exposing (promoSimple, promoTable, simpleHero)
 --------------------------------------------------------------------------------
 
 
-classroomList : List ClassroomInfo -> Html msg
+classroomList : List ClassroomInfo -> Html Msg
 classroomList lst =
     let
         empty =
@@ -49,7 +52,7 @@ classroomList lst =
         ]
 
 
-classroomInfo : ClassroomInfo -> Html msg
+classroomInfo : ClassroomInfo -> Html Msg
 classroomInfo cls =
     div [ class "classroom-info-card" ]
         [ div [ class "classroom-info-card__image" ] []
@@ -65,7 +68,7 @@ classroomInfo cls =
             ]
         , div [ class "classroom-info-card__toolbar" ]
             [ button
-                [ attribute "raised" "raised" ]
+                [ attribute "raised" "raised" , onClick (Msg.ChangeRoute (ClassRoomPage)) ]
                 [ text "Go" ]
             ]
         ]

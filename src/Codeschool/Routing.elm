@@ -23,6 +23,7 @@ matchers =
         , map Logout (s "logout")
         , map Actions (s "actions")
         , map Register (s "register")
+        , map ClassRoomPage (s "classroompage")
         ]
 
 
@@ -90,6 +91,9 @@ baseReverse route =
 
         Register ->
             "register/"
+
+        ClassRoomPage ->
+            "classroompage/"
 
 
 {-| Reverse URL prepending the "#" symbol
