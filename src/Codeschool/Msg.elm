@@ -6,7 +6,7 @@ module Codeschool.Msg exposing (..)
 import Codeschool.Model exposing (Model, Route)
 import Codeschool.Routing exposing (parseLocation, reverse)
 import Data.Date exposing (..)
-import Data.User exposing (User, UserError, UserLogin, toJson, userDecoder, userErrorDecoder)
+import Data.User exposing (User, Token, UserError, UserLogin, toJson, userDecoder, userErrorDecoder, tokenDecoder)
 import Http exposing (..)
 import Json.Decode exposing (string)
 import Json.Decode.Pipeline exposing (decode, required)
@@ -23,8 +23,10 @@ type Msg
     | DispatchUserRegistration
     | UpdateRegister String String
     | RequestReceiver (Result Http.Error User)
+    | GetLoginResponse (Result Http.Error Token)
     | UpdateDate String String
     | UpdateUserDate
+    | DispatchLogin
     | UpdateLogin String String
 
 {-| Update function
@@ -106,6 +108,21 @@ update msg model =
         -- Handle others API errors, Ex: connection timeout
         RequestReceiver (Err _) ->
           Debug.log "#DeuRuim de vez"
+          (model, Cmd.none)
+
+        DispatchLogin ->
+          let
+            data = sendLoginData model.userLogin
+          in
+            Debug.log(toString data)
+            (model, data)
+
+        GetLoginResponse (Ok data) ->
+          Debug.log("Deu bom")
+          (model, Cmd.none)
+
+        GetLoginResponse (Result.Err _) ->
+          Debug.log("Deu ruim")
           (model, Cmd.none)
 
 
@@ -196,6 +213,23 @@ formReceiver user inputModel inputValue =
 
     _ ->
         user
+
+
+sendLoginData : UserLogin -> Cmd Msg
+sendLoginData user =
+    let
+        userLoginRequest =
+            Http.request
+                { body = Data.User.toJsonLogin user |> Http.jsonBody
+                , expect = Http.expectJson tokenDecoder
+                , headers = []
+                , method = "POST"
+                , timeout = Nothing
+                , url = "http://localhost:8000/api-token-auth/"
+                , withCredentials = False
+                }
+    in
+        userLoginRequest |> Http.send GetLoginResponse
 
 
 sendRegData : User -> Cmd Msg
