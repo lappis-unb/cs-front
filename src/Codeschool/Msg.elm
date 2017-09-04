@@ -25,7 +25,6 @@ type Msg
     | RequestReceiver (Result Http.Error User)
     | GetLoginResponse (Result Http.Error Token)
     | UpdateDate String String
-    | UpdateUserDate
     | DispatchLogin
     | UpdateLogin String String
 
@@ -53,15 +52,6 @@ update msg model =
         GoBack int->
          (model, back int)
 
-        DispatchUserRegistration ->
-
-          let
-              data = sendRegData model.user
-
-          in
-        --    Debug.log (toString data)
-            (model, data)
-
         UpdateRegister inputModel inputValue ->
             let
                 newUser = formReceiver model.user inputModel inputValue
@@ -74,18 +64,29 @@ update msg model =
             in
                 ({model | userLogin = newLogin}, Cmd.none)
 
-        UpdateUserDate ->
-            let
-                newUser = dateUserUpdate model.user model.date
-            in
-                ({model | user = newUser}, Cmd.none)
+        DispatchUserRegistration ->
+          let
+              data = sendRegData model.user
+
+          in
+        --    Debug.log (toString data)
+            (model, data)
+
+        DispatchLogin ->
+          let
+            data = sendLoginData model.userLogin
+          in
+            Debug.log(toString data)
+            (model, data)
+
 
         UpdateDate field value ->
             let
               newDate = dateReceiver model.date field value
-              newModel = {model | date = newDate}
+              newUser = dateUserUpdate model.user newDate
+              newModel = {model | date = newDate, user = newUser}
             in
-              update UpdateUserDate newModel
+               newModel ! []
 
 
         -- Handle successful user registration
@@ -110,12 +111,6 @@ update msg model =
           Debug.log "#DeuRuim de vez"
           (model, Cmd.none)
 
-        DispatchLogin ->
-          let
-            data = sendLoginData model.userLogin
-          in
-            Debug.log(toString data)
-            (model, data)
 
         GetLoginResponse (Ok data) ->
           Debug.log("Deu bom")
