@@ -24,14 +24,20 @@ type alias User =
     , about_me: String
     }
 
-type alias Token =
-  { token : String }
-
+type alias Auth =
+  { token : String
+  , user : LoggedUser
+  }
 
 type alias UserLogin =
   { email: String
   , password : String
   }
+
+type alias LoggedUser =
+   { alias_: String
+   , email: String
+   }
 
 type alias UserError =
     { name : List String
@@ -47,8 +53,11 @@ type alias UserError =
     }
 
 
-emptyToken : Token
-emptyToken = { token = "" }
+emptyAuth : Auth
+emptyAuth = { token = "", user = emptyLoggedUser }
+
+emptyLoggedUser : LoggedUser
+emptyLoggedUser = {alias_ = "", email = ""}
 
 testUser : User
 testUser =
@@ -98,10 +107,17 @@ userErrorDecoder =
       |> optional "birthday" (Dec.list Dec.string) []
       |> optional "about_me" (Dec.list Dec.string) []
 
-tokenDecoder : Dec.Decoder Token
-tokenDecoder =
-    decode Token
+authDecoder : Dec.Decoder Auth
+authDecoder =
+    decode Auth
       |> required "token" Dec.string
+      |> required "user" loggedUserDecoder
+
+loggedUserDecoder : Dec.Decoder LoggedUser
+loggedUserDecoder =
+    decode LoggedUser
+      |> required "alias" Dec.string
+      |> required "email" Dec.string
 
 {-| A decoder for user objects
 -}

@@ -6,7 +6,7 @@ module Codeschool.Msg exposing (..)
 import Codeschool.Model exposing (Model, Route)
 import Codeschool.Routing exposing (parseLocation, reverse)
 import Data.Date exposing (..)
-import Data.User exposing (User, Token, UserError, UserLogin, toJson, userDecoder, userErrorDecoder, tokenDecoder)
+import Data.User exposing (User, Auth, UserError, UserLogin, toJson, userDecoder, userErrorDecoder, authDecoder)
 import Http exposing (..)
 import Json.Decode exposing (string)
 import Json.Decode.Pipeline exposing (decode, required)
@@ -23,7 +23,7 @@ type Msg
     | DispatchUserRegistration
     | UpdateRegister String String
     | RequestReceiver (Result Http.Error User)
-    | GetLoginResponse (Result Http.Error Token)
+    | GetLoginResponse (Result Http.Error Auth)
     | UpdateDate String String
     | DispatchLogin
     | UpdateLogin String String
@@ -113,8 +113,12 @@ update msg model =
 
 
         GetLoginResponse (Ok data) ->
+          let
+            newLoggedUser = data.user
+            newToken = data.token
+          in
           Debug.log("Deu bom")
-          (model, Cmd.none)
+            { model | loggedUser = newLoggedUser, token = newToken} ! []
 
         GetLoginResponse (Result.Err _) ->
           Debug.log("Deu ruim")
@@ -216,7 +220,7 @@ sendLoginData user =
         userLoginRequest =
             Http.request
                 { body = Data.User.toJsonLogin user |> Http.jsonBody
-                , expect = Http.expectJson tokenDecoder
+                , expect = Http.expectJson authDecoder
                 , headers = []
                 , method = "POST"
                 , timeout = Nothing
