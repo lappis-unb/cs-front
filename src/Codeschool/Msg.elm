@@ -9,7 +9,6 @@ import Data.Date exposing (..)
 import Data.User exposing (User, Auth, UserError, UserLogin, toJson, userDecoder, userErrorDecoder, authDecoder)
 import Http exposing (..)
 import Json.Decode exposing (string)
-import Json.Decode.Pipeline exposing (decode, required)
 import Navigation exposing (Location, back, newUrl)
 
 {-| Message type
@@ -27,6 +26,7 @@ type Msg
     | UpdateDate String String
     | DispatchLogin
     | UpdateLogin String String
+    | LogOut
 
 {-| Update function
 -}
@@ -124,6 +124,13 @@ update msg model =
         GetLoginResponse (Result.Err _) ->
           Debug.log("Deu ruim")
           (model, Cmd.none)
+
+        LogOut ->
+          let
+            noneUser = {alias_ = "", email = ""}
+          in
+            {model | loggedUser = noneUser, isLogged = False } ! []
+            |> andThen (ChangeRoute Codeschool.Model.Index)
 
 
 
@@ -242,7 +249,7 @@ sendRegData user =
                 , headers = []
                 , method = "POST"
                 , timeout = Nothing
-                , url = "http://localhost:3000/users"
+                , url = "http://localhost:8000/api/users/"
                 , withCredentials = False
                 }
     in
