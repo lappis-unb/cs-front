@@ -30,6 +30,7 @@ type alias Model =
     , auth : Auth
     , token : String
     , loggedUser : LoggedUser
+    , isLogged : Bool
     }
 
 
@@ -50,6 +51,7 @@ init =
     , auth = emptyAuth
     , token = ""
     , loggedUser = emptyLoggedUser
+    , isLogged = False
     }
 
 

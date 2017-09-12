@@ -118,7 +118,8 @@ update msg model =
             newToken = data.token
           in
           Debug.log("Deu bom")
-            { model | loggedUser = newLoggedUser, token = newToken} ! []
+            { model | loggedUser = newLoggedUser, token = newToken, isLogged = True} ! []
+            |> andThen (ChangeRoute Codeschool.Model.Index)
 
         GetLoginResponse (Result.Err _) ->
           Debug.log("Deu ruim")
@@ -246,3 +247,12 @@ sendRegData user =
                 }
     in
         userRegRequest |> Http.send RequestReceiver
+
+
+andThen : Msg -> ( Model, Cmd Msg ) -> ( Model, Cmd Msg )
+andThen msg ( model, cmd ) =
+    let
+        ( newmodel, newcmd ) =
+            update msg model
+    in
+        newmodel ! [ cmd, newcmd ]
