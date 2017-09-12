@@ -8,27 +8,58 @@ import Html.Events exposing (..)
 import Ui.Generic exposing (container)
 import Ui.Parts exposing (promoSimple, promoTable, simpleHero)
 
+checkLogin : Model -> String -> Html Msg
+checkLogin model place =
+    case model.isLogged of
+      False ->
+        case place of
+          "hero" ->
+              simpleHero "Welcome to Codeschool" "" "simple-hero"
+          "promo" ->
+              div []
+                  [ text
+                    """
+                    Codeschool provides many programming-based courses.
+                    If you are not registered, please click
+                    """
+                  , a [ onClick (ChangeRoute (Register)), style [("cursor", "pointer")] ] [ text "here" ]
+                  , text
+                    """
+                    . Otherwise, Log in
+                    """
+                  , a [ onClick (ChangeRoute (Login)), style [("cursor", "pointer")] ] [ text "here" ]
+                  ]
+
+          _ ->
+            div [] []
+
+      True ->
+        case place of
+          "hero" ->
+              simpleHero ("Welcome to Codeschool, " ++ model.loggedUser.alias_) "" "simple-hero"
+          "promo" ->
+              div []
+                  [ text
+                    """
+                    Codeschool provides many programming-based courses.
+                    Start right now!
+                    """
+                  ]
+          _ ->
+            div [] []
+
+
 
 view : Model -> Html Msg
 view m =
     div []
-        [ simpleHero "Welcome to Codeschool" "" "simple-hero"
+        [ checkLogin m "hero"
         , container []
             [ promoTable
                 ( promoSimple "assignment"
                     "Enroll"
                     []
-                    [ text
-                        """
-                        Codeschool provides many programming-based courses.
-                        If you are not registered, please click
-                        """
-                    , a [ onClick (ChangeRoute (Register)), style [("cursor", "pointer")] ] [ text "here" ]
-                    , text
-                        """
-                        . Otherwise, Log in
-                        """
-                    , a [ onClick (ChangeRoute (Login)), style [("cursor", "pointer")] ] [ text "here" ]
+                    [ checkLogin m "promo"
                     ]
                 , promoSimple "search"
                     "Discover"
