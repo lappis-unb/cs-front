@@ -28,6 +28,11 @@ type alias SendProfile =
       , visibility: String
       }
 
+type alias ExpectRegister =
+  { alias_: String
+  , role: String
+  }
+
 type alias Auth =
   { token : String
   , user : LoggedUser
@@ -117,11 +122,22 @@ userErrorDecoder =
       |> optional "birthday" (Dec.list Dec.string) []
       |> optional "about_me" (Dec.list Dec.string) []
 
+
+
+registerDecoder : Dec.Decoder ExpectRegister
+registerDecoder =
+  decode ExpectRegister
+    |> required "alias" Dec.string
+    |> required "role" Dec.string
+
+
 authDecoder : Dec.Decoder Auth
 authDecoder =
     decode Auth
       |> required "token" Dec.string
       |> required "user" loggedUserDecoder
+
+
 
 loggedUserDecoder : Dec.Decoder LoggedUser
 loggedUserDecoder =

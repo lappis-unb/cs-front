@@ -21,7 +21,7 @@ type Msg
     | GoBack Int
     | DispatchUserRegistration
     | UpdateRegister String String
-    | RequestReceiver (Result Http.Error User)
+    | RequestReceiver (Result Http.Error ExpectRegister)
     | GetLoginResponse (Result Http.Error Auth)
     | UpdateDate String String
     | DispatchLogin
@@ -90,9 +90,9 @@ update msg model =
 
 
         -- Handle successful user registration
-        RequestReceiver (Ok user) ->
+        RequestReceiver (Ok register) ->
           Debug.log "OK OK"
-          Debug.log(toString user)
+          Debug.log(toString register)
           (model, Cmd.none)
 
 
@@ -206,6 +206,9 @@ formReceiver user inputModel inputValue =
     "password_confirmation" ->
         {user | password_confirmation = inputValue}
 
+    "school_id" ->
+        {user | school_id = inputValue}
+
     _ ->
         user
 
@@ -233,7 +236,7 @@ sendRegData user =
         userRegRequest =
             Http.request
                 { body = Data.User.toJson user |> Http.jsonBody
-                , expect = Http.expectJson userDecoder
+                , expect = Http.expectJson registerDecoder
                 , headers = []
                 , method = "POST"
                 , timeout = Nothing
