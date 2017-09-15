@@ -43,7 +43,7 @@ getRouteView model =
         Logout ->
             Page.Index.view model
 
-        Profile id ->
+        Profile ->
             Page.Profile.view model
 
         Progress ->

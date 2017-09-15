@@ -19,7 +19,7 @@ type alias User =
     , school_id: String -- needed
     }
 
-type alias Profile =
+type alias SendProfile =
       { gender: String
       , phone : String
       , date_of_birth: String
@@ -73,7 +73,7 @@ testUser =
     , school_id = "15/0344750"
     }
 
-testProfile : Profile
+testProfile : SendProfile
 testProfile =
   { gender = ""
   , phone = ""

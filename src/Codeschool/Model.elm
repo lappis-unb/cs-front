@@ -18,7 +18,7 @@ import Toast exposing (Toast)
 -}
 type alias Model =
     { user : User
-    , profile : Profile
+    , profile : SendProfile
     , userError: UserError
     , userLogin : UserLogin
     , route : Route
@@ -84,7 +84,7 @@ type Route
     | QuestionList
     | Question Id
     | Social
-    | Profile Id
+    | Profile
     | Logout
     | Actions
     | Register

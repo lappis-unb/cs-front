@@ -45,7 +45,7 @@ header model =
                           [ div [class "page-header__user-menu-icon"] [ Material.Icons.Action.perm_identity black 32 ]
                           , div [ class "page-header__user-menu-title" ] [ h1 [] [ text "Actions" ] ]
                           , span [ onClick (ChangeRoute (Register)) ] [ text "Register" ]
-                          , span [ onClick (ChangeRoute (Profile model.user.id)) ] [ text "Profile" ]
+                          , span [ onClick (ChangeRoute (Profile)) ] [ text "Profile" ]
                           , checkLogin model
                           ]
                     ]

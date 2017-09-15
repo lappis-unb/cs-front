@@ -6,7 +6,7 @@ module Codeschool.Msg exposing (..)
 import Codeschool.Model exposing (Model, Route)
 import Codeschool.Routing exposing (parseLocation, reverse)
 import Data.Date exposing (..)
-import Data.User exposing (User, Auth, UserError, UserLogin, toJson, userDecoder, userErrorDecoder, authDecoder)
+import Data.User exposing (..)
 import Http exposing (..)
 import Json.Decode exposing (string)
 import Navigation exposing (Location, back, newUrl)
@@ -83,8 +83,8 @@ update msg model =
         UpdateDate field value ->
             let
               newDate = dateReceiver model.date field value
-              newUser = dateUserUpdate model.user newDate
-              newModel = {model | date = newDate, user = newUser}
+              newProfile = dateUserUpdate model.profile newDate
+              newModel = {model | date = newDate, profile = newProfile}
             in
                newModel ! []
 
@@ -158,9 +158,9 @@ withElement el lst =
         el :: lst
 
 
-dateUserUpdate : User -> Date -> User
-dateUserUpdate user date =
-  {user | birthday = date.month ++ "-" ++ date.day ++ "-" ++ date.year}
+dateUserUpdate : SendProfile -> Date -> SendProfile
+dateUserUpdate profile date =
+  {profile | date_of_birth = date.month ++ "-" ++ date.day ++ "-" ++ date.year}
 
 
 dateReceiver : Date -> String -> String -> Date
@@ -200,23 +200,11 @@ formReceiver user inputModel inputValue =
     "email" ->
         {user | email = inputValue}
 
-    "email_confirmation" ->
-        {user | email_confirmation = inputValue}
-
     "password" ->
         {user | password = inputValue}
 
     "password_confirmation" ->
         {user | password_confirmation = inputValue}
-
-    "school_id" ->
-        {user | school_id = inputValue}
-
-    "gender" ->
-        {user | gender = inputValue}
-
-    "about_me" ->
-        {user | about_me = inputValue}
 
     _ ->
         user
