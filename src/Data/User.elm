@@ -11,18 +11,22 @@ import Json.Decode.Pipeline exposing (decode, required, optional)
 {-| Represents a simple user
 -}
 type alias User =
-    { name : String
+    { name : String --needed
     , alias_ : String -- needed
     , email : String -- needed
-    , email_confirmation : String -- needed
-    , id : Int
     , password : String -- needed
     , password_confirmation : String -- needed
     , school_id: String -- needed
-    , gender: String
-    , birthday: String
-    , about_me: String
     }
+
+type alias Profile =
+      { gender: String
+      , phone : String
+      , date_of_birth: String
+      , website: String
+      , about_me: String
+      , visibility: String
+      }
 
 type alias Auth =
   { token : String
@@ -64,14 +68,20 @@ testUser =
     { name = "Anonymous"
     , alias_ = "unknown"
     , email = "none@gmail.com"
-    , email_confirmation = "none@gmail.com"
-    , id = 1, password = "123456"
+    , password = "123456"
     , password_confirmation = "123456"
     , school_id = "15/0344750"
-    , gender = "none"
-    , birthday = "none"
-    , about_me = "none"
     }
+
+testProfile : Profile
+testProfile =
+  { gender = ""
+  , phone = ""
+  , date_of_birth = ""
+  , website = ""
+  , about_me = ""
+  , visibility = ""
+  }
 
 testLogin : UserLogin
 testLogin =
@@ -127,14 +137,9 @@ userDecoder =
       |> required "name" Dec.string
       |> required "alias" Dec.string
       |> required "email" Dec.string
-      |> required "email_confirmation" Dec.string
-      |> required "id" Dec.int
       |> required "password" Dec.string
       |> required "password_confirmation" Dec.string
       |> required "school_id" Dec.string
-      |> required "gender" Dec.string
-      |> required "birthday" Dec.string
-      |> required "about_me" Dec.string
     -- Dec.map8 User
     --     (field "name" string)
     --     (field "alias" string)
@@ -157,15 +162,10 @@ toJson user =
     Enc.object
         [ ( "name", str user.name )
         , ( "alias", str user.alias_ )
-        , ( "email_confirmation", str user.email )
         , ( "email", str user.email )
-        , ( "id", Enc.int user.id )
         , ( "password", str user.password)
         , ( "password_confirmation", str user.password_confirmation)
         , ( "school_id", str user.school_id)
-        , ( "gender", str user.gender)
-        , ( "birthday", str user.birthday)
-        , ( "about_me", str user.about_me)
         ]
 
 
@@ -179,10 +179,3 @@ toJsonLogin user =
         [ ( "email", str user.email )
         , ( "password", str user.password)
         ]
-
-
-{-| Return the REST URL associated with the user
--}
-toURL : User -> String
-toURL user =
-    "/users/" ++ toString user.id
