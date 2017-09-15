@@ -18,7 +18,7 @@ import Toast exposing (Toast)
 -}
 type alias Model =
     { user : User
-    , profile : SendProfile
+    , sendProfile : SendProfile
     , userError: UserError
     , userLogin : UserLogin
     , route : Route
@@ -40,7 +40,7 @@ type alias Model =
 init : Model
 init =
     { user = testUser
-    , profile = testProfile
+    , sendProfile = testProfile
     , userError = testUserError
     , userLogin = testLogin
     , route = Index

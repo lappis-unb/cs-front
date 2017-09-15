@@ -30,6 +30,22 @@ regFormField model fieldErrors attributes =
             , ul [] (mapErrorsToLi fieldErrors)
             ]
 
+regProfile : Model -> List String -> (String, String, String, String, String) -> Html Msg
+regProfile model fieldErrors attributes =
+    let
+        (placeholderText, fieldType, modelValue, regex, errorMessage) = attributes
+    in
+        div [ class "item-form" ]
+            [ input
+                [ pattern regex
+                , placeholder placeholderText
+                , type_ fieldType
+                , onInput (Msg.UpdateProfile modelValue)
+                , title errorMessage
+                ] []
+            , ul [] (mapErrorsToLi fieldErrors)
+            ]
+
 
 checkLogin : Model -> Html Msg
 checkLogin model =
@@ -68,14 +84,6 @@ checkLogin model =
                       ] []
                   , ul [] (mapErrorsToLi model.userError.email)
                   ]
-              , div [ class "item-form" ]
-                  [ input
-                      [ placeholder "E-mail confirmation"
-                      , type_ "email"
-                      , onInput (Msg.UpdateRegister "email_confirmation")
-                      ] []
-                  , ul [] (mapErrorsToLi model.userError.email_confirmation)
-                  ]
               , regFormField model model.userError.password
                   ( "Password"
                   , "password"
@@ -91,19 +99,33 @@ checkLogin model =
                   , "Confirme sua senha"
                   )
               , h1 [ class "form-title" ] [ text "Optional Fields" ]
-              , select [ Html.Attributes.name "Gender", class "item-form", onChange (Msg.UpdateRegister "gender") ]
+              , select [ Html.Attributes.name "Gender", class "item-form", onChange (Msg.UpdateProfile "gender") ]
                   [ option [ value "", disabled True, selected True, class "disabled-item" ] [ text "Gender" ]
                   , option [ value "Male" ] [ text "Male" ]
                   , option [ value "Female" ] [ text "Female" ]
                   , option [ value "Other" ] [ text "Other" ]
                   ]
+              , regProfile model model.userError.alias_
+                  ( "Phone"
+                  , "text"
+                  , "phone"
+                  , "^[0-9]{8,20}$"
+                  , "Por favor insira um telefone válido."
+                  )
               , div [ class "date-form" ]
                   [ monthPicker
                   , input [ pattern "([0]?[1-9]|[12][0-9]|3[01])", maxlength 2, placeholder "Day", class "date-item", onInput (Msg.UpdateDate "day") ] []
                   , input [ pattern "^(19|20)[0-9]{2}$", maxlength 4, placeholder "Year", class "date-item", onInput (Msg.UpdateDate "year") ] []
                   ]
+              , regProfile model model.userError.alias_
+                  ( "webSite"
+                  , "text"
+                  , "website"
+                  , "^[A-Za-z0-9_.@]{5,100}$"
+                  , "Por favor insira um website válido"
+                  )
               , div [ class "item-form" ]
-                  [ textarea [ maxlength 500, placeholder "About me", onInput (Msg.UpdateRegister "about_me") ] []
+                  [ textarea [ maxlength 500, placeholder "About me", onInput (Msg.UpdateProfile "about_me") ] []
                   ]
               , button [ class "submit-button", onClick Msg.DispatchUserRegistration ] [ text "Submit" ]
               ]

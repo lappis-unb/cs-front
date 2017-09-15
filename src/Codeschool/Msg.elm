@@ -21,6 +21,7 @@ type Msg
     | GoBack Int
     | DispatchUserRegistration
     | UpdateRegister String String
+    | UpdateProfile String String
     | RequestReceiver (Result Http.Error ExpectRegister)
     | GetLoginResponse (Result Http.Error Auth)
     | UpdateDate String String
@@ -58,6 +59,12 @@ update msg model =
             in
                 ({model | user = newUser}, Cmd.none)
 
+        UpdateProfile inputModel inputValue ->
+            let
+              newProfile = profileReceiver model.sendProfile inputModel inputValue
+            in
+              ({model | sendProfile = newProfile}, Cmd.none)
+
         UpdateLogin inputModel inputValue ->
             let
                 newLogin = loginReceiver model.userLogin inputModel inputValue
@@ -83,8 +90,8 @@ update msg model =
         UpdateDate field value ->
             let
               newDate = dateReceiver model.date field value
-              newProfile = dateUserUpdate model.profile newDate
-              newModel = {model | date = newDate, profile = newProfile}
+              newProfile = dateUserUpdate model.sendProfile newDate
+              newModel = {model | date = newDate, sendProfile = newProfile}
             in
                newModel ! []
 
@@ -211,6 +218,25 @@ formReceiver user inputModel inputValue =
 
     _ ->
         user
+
+profileReceiver : SendProfile -> String -> String -> SendProfile
+profileReceiver sendProfile inputModel inputValue =
+  case inputModel of
+    "gender" ->
+      {sendProfile | gender = inputValue}
+    "phone" ->
+      {sendProfile | phone = inputValue}
+    "date_of_birth" ->
+      {sendProfile | date_of_birth = inputValue}
+    "website" ->
+      {sendProfile | website = inputValue}
+    "about_me" ->
+      {sendProfile | about_me = inputValue}
+    "visibility" ->
+      {sendProfile | visibility = inputValue}
+    _ ->
+      sendProfile
+
 
 
 sendLoginData : UserLogin -> Cmd Msg
