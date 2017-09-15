@@ -18,6 +18,7 @@ import Page.Social
 import Page.Submission
 import Page.Actions
 import Page.Register
+import Page.Login
 import Ui.Layout
 
 
@@ -71,6 +72,9 @@ getRouteView model =
 
         Register ->
             Page.Register.view model
+
+        Login ->
+            Page.Login.view model
 
 
 view : Html Msg -> Model -> Html Msg

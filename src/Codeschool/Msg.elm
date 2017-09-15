@@ -6,10 +6,9 @@ module Codeschool.Msg exposing (..)
 import Codeschool.Model exposing (Model, Route)
 import Codeschool.Routing exposing (parseLocation, reverse)
 import Data.Date exposing (..)
-import Data.User exposing (User, UserError, toJson, userDecoder, userErrorDecoder)
+import Data.User exposing (User, Auth, UserError, UserLogin, toJson, userDecoder, userErrorDecoder, authDecoder)
 import Http exposing (..)
 import Json.Decode exposing (string)
-import Json.Decode.Pipeline exposing (decode, required)
 import Navigation exposing (Location, back, newUrl)
 
 {-| Message type
@@ -23,8 +22,11 @@ type Msg
     | DispatchUserRegistration
     | UpdateRegister String String
     | RequestReceiver (Result Http.Error User)
+    | GetLoginResponse (Result Http.Error Auth)
     | UpdateDate String String
-    | UpdateUserDate
+    | DispatchLogin
+    | UpdateLogin String String
+    | LogOut
 
 {-| Update function
 -}
@@ -50,8 +52,19 @@ update msg model =
         GoBack int->
          (model, back int)
 
-        DispatchUserRegistration ->
+        UpdateRegister inputModel inputValue ->
+            let
+                newUser = formReceiver model.user inputModel inputValue
+            in
+                ({model | user = newUser}, Cmd.none)
 
+        UpdateLogin inputModel inputValue ->
+            let
+                newLogin = loginReceiver model.userLogin inputModel inputValue
+            in
+                ({model | userLogin = newLogin}, Cmd.none)
+
+        DispatchUserRegistration ->
           let
               data = sendRegData model.user
 
@@ -59,24 +72,21 @@ update msg model =
         --    Debug.log (toString data)
             (model, data)
 
-        UpdateRegister inputModel inputValue ->
-            let
-                newUser = formReceiver model.user inputModel inputValue
-            in
-                ({model | user = newUser}, Cmd.none)
+        DispatchLogin ->
+          let
+            data = sendLoginData model.userLogin
+          in
+            Debug.log(toString data)
+            (model, data)
 
-        UpdateUserDate ->
-            let
-                newUser = dateUserUpdate model.user model.date
-            in
-                ({model | user = newUser}, Cmd.none)
 
         UpdateDate field value ->
             let
               newDate = dateReceiver model.date field value
-              newModel = {model | date = newDate}
+              newUser = dateUserUpdate model.user newDate
+              newModel = {model | date = newDate, user = newUser}
             in
-              update UpdateUserDate newModel
+               newModel ! []
 
 
         -- Handle successful user registration
@@ -100,6 +110,27 @@ update msg model =
         RequestReceiver (Err _) ->
           Debug.log "#DeuRuim de vez"
           (model, Cmd.none)
+
+
+        GetLoginResponse (Ok data) ->
+          let
+            newLoggedUser = data.user
+            newToken = data.token
+          in
+          Debug.log("Deu bom")
+            { model | loggedUser = newLoggedUser, token = newToken, isLogged = True} ! []
+            |> andThen (ChangeRoute Codeschool.Model.Index)
+
+        GetLoginResponse (Result.Err _) ->
+          Debug.log("Deu ruim")
+          (model, Cmd.none)
+
+        LogOut ->
+          let
+            noneUser = {alias_ = "", email = ""}
+          in
+            {model | loggedUser = noneUser, isLogged = False } ! []
+            |> andThen (ChangeRoute Codeschool.Model.Index)
 
 
 
@@ -145,6 +176,18 @@ dateReceiver date field value =
           date
 
 
+loginReceiver : UserLogin -> String -> String -> UserLogin
+loginReceiver userLogin inputModel inputValue =
+  case inputModel of
+    "email" ->
+        { userLogin | email = inputValue }
+
+    "password" ->
+        { userLogin | password = inputValue}
+
+    _ ->
+       userLogin
+
 formReceiver : User -> String -> String -> User
 formReceiver user inputModel inputValue =
   case inputModel of
@@ -179,6 +222,23 @@ formReceiver user inputModel inputValue =
         user
 
 
+sendLoginData : UserLogin -> Cmd Msg
+sendLoginData user =
+    let
+        userLoginRequest =
+            Http.request
+                { body = Data.User.toJsonLogin user |> Http.jsonBody
+                , expect = Http.expectJson authDecoder
+                , headers = []
+                , method = "POST"
+                , timeout = Nothing
+                , url = "http://localhost:8000/api-token-auth/"
+                , withCredentials = False
+                }
+    in
+        userLoginRequest |> Http.send GetLoginResponse
+
+
 sendRegData : User -> Cmd Msg
 sendRegData user =
     let
@@ -189,8 +249,17 @@ sendRegData user =
                 , headers = []
                 , method = "POST"
                 , timeout = Nothing
-                , url = "http://localhost:3000/users"
+                , url = "http://localhost:8000/api/users/"
                 , withCredentials = False
                 }
     in
         userRegRequest |> Http.send RequestReceiver
+
+
+andThen : Msg -> ( Model, Cmd Msg ) -> ( Model, Cmd Msg )
+andThen msg ( model, cmd ) =
+    let
+        ( newmodel, newcmd ) =
+            update msg model
+    in
+        newmodel ! [ cmd, newcmd ]

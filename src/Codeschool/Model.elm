@@ -19,6 +19,7 @@ import Toast exposing (Toast)
 type alias Model =
     { user : User
     , userError: UserError
+    , userLogin : UserLogin
     , route : Route
     , classroomInfoList : List ClassroomInfo
     , classroom : Maybe Classroom
@@ -26,6 +27,10 @@ type alias Model =
     , date : Date
     , time : Time
     , toast : Toast String
+    , auth : Auth
+    , token : String
+    , loggedUser : LoggedUser
+    , isLogged : Bool
     }
 
 
@@ -35,6 +40,7 @@ init : Model
 init =
     { user = testUser
     , userError = testUserError
+    , userLogin = testLogin
     , route = Index
     , classroomInfoList = []
     , classroom = Nothing
@@ -42,6 +48,10 @@ init =
     , date = testDate
     , time = 0
     , toast = Toast.initWithTransitionDelay (Time.second * 1.5)
+    , auth = emptyAuth
+    , token = ""
+    , loggedUser = emptyLoggedUser
+    , isLogged = False
     }
 
 
@@ -76,3 +86,4 @@ type Route
     | Logout
     | Actions
     | Register
+    | Login

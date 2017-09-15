@@ -16,6 +16,14 @@ import Ui.Generic exposing (icon, zindex)
 
 {-| View header component.
 -}
+checkLogin : Model -> Html Msg
+checkLogin model =
+  case model.isLogged of
+    False ->
+      div [] []
+    True ->
+      span [ (onClick LogOut) ] [ text "Logout" ]
+
 header : Model -> Html Msg
 header model =
     let
@@ -38,7 +46,7 @@ header model =
                           , div [ class "page-header__user-menu-title" ] [ h1 [] [ text "Actions" ] ]
                           , span [ onClick (ChangeRoute (Register)) ] [ text "Register" ]
                           , span [ onClick (ChangeRoute (Profile model.user.id)) ] [ text "Profile" ]
-                          , span [ href "/logout/" ] [ text "Logout" ]
+                          , checkLogin model
                           ]
                     ]
 

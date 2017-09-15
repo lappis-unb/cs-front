@@ -31,84 +31,98 @@ regFormField model fieldErrors attributes =
             ]
 
 
+checkLogin : Model -> Html Msg
+checkLogin model =
+  case model.isLogged of
+    False ->
+      div []
+          [ simpleHero "Register" "" "simple-hero__page-blue"
+          , div [ class "main-container" ]
+              [ h1 [ class "form-title" ] [ text "Required Fields" ]
+              , regFormField model model.userError.name
+                  ( "Full name"
+                  , "text"
+                  , "name"
+                  , "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ ]{3,50}$"
+                  , "Por favor insira um nome entre 3 e 50 caracteres"
+                  )
+              , regFormField model model.userError.school_id
+                  ( "School id"
+                  , "text"
+                  , "school_id"
+                  , "^[0-9]{1,15}$"
+                  , "Somente números são permitidos."
+                  )
+              , regFormField model model.userError.alias_
+                  ( "Username"
+                  , "text"
+                  , "alias_"
+                  , "^[A-Za-z0-9_.]{3,20}$"
+                  , "Por favor insira um usuário de 3 a 20 caracteres alfanuméricos. Somente _ e . são permitidos."
+                  )
+              , div [ class "item-form" ]
+                  [ input
+                      [ placeholder "E-mail"
+                      , type_ "email"
+                      , onInput (Msg.UpdateRegister "email")
+                      ] []
+                  , ul [] (mapErrorsToLi model.userError.email)
+                  ]
+              , div [ class "item-form" ]
+                  [ input
+                      [ placeholder "E-mail confirmation"
+                      , type_ "email"
+                      , onInput (Msg.UpdateRegister "email_confirmation")
+                      ] []
+                  , ul [] (mapErrorsToLi model.userError.email_confirmation)
+                  ]
+              , regFormField model model.userError.password
+                  ( "Password"
+                  , "password"
+                  , "password"
+                  , "^[\\S]{6,30}$"
+                  , "Sua senha deve conter no mínimo 6 caracteres alfanuméricos. Símbolos permitidos."
+                  )
+              , regFormField model model.userError.password_confirmation
+                  ( "Repeat Password"
+                  , "password"
+                  , "password_confirmation"
+                  , "^[\\S]{6,30}$"
+                  , "Confirme sua senha"
+                  )
+              , h1 [ class "form-title" ] [ text "Optional Fields" ]
+              , select [ Html.Attributes.name "Gender", class "item-form", onChange (Msg.UpdateRegister "gender") ]
+                  [ option [ value "", disabled True, selected True, class "disabled-item" ] [ text "Gender" ]
+                  , option [ value "Male" ] [ text "Male" ]
+                  , option [ value "Female" ] [ text "Female" ]
+                  , option [ value "Other" ] [ text "Other" ]
+                  ]
+              , div [ class "date-form" ]
+                  [ monthPicker
+                  , input [ pattern "([0]?[1-9]|[12][0-9]|3[01])", maxlength 2, placeholder "Day", class "date-item", onInput (Msg.UpdateDate "day") ] []
+                  , input [ pattern "^(19|20)[0-9]{2}$", maxlength 4, placeholder "Year", class "date-item", onInput (Msg.UpdateDate "year") ] []
+                  ]
+              , div [ class "item-form" ]
+                  [ textarea [ maxlength 500, placeholder "About me", onInput (Msg.UpdateRegister "about_me") ] []
+                  ]
+              , button [ class "submit-button", onClick Msg.DispatchUserRegistration ] [ text "Submit" ]
+              ]
+          ]
+    True ->
+      div []
+          [ simpleHero "Register" "" "simple-hero__page-blue"
+          , div [ class "main-container" ]
+            [div [class "loggedin-text"] [ text "You are already logged in!" ]]
+            -- style loggedin reused from _login.scss
+          ]
+
 view : Model -> Html Msg
 view model =
-    div []
-        [ simpleHero "Register" "" "simple-hero__page-blue"
-        , div [ class "main-container" ]
-            [ h1 [ class "form-title" ] [ text "Required Fields" ]
-            , regFormField model model.userError.name
-                ( "Full name"
-                , "text"
-                , "name"
-                , "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ ]{3,50}$"
-                , "Por favor insira um nome entre 3 e 50 caracteres"
-                )
-            , regFormField model model.userError.school_id
-                ( "School id"
-                , "text"
-                , "school_id"
-                , "^[0-9]{1,15}$"
-                , "Somente números são permitidos."
-                )
-            , regFormField model model.userError.alias_
-                ( "Username"
-                , "text"
-                , "alias_"
-                , "^[A-Za-z0-9_.]{3,20}$"
-                , "Por favor insira um usuário de 3 a 20 caracteres alfanuméricos. Somente _ e . são permitidos."
-                )
-            , div [ class "item-form" ]
-                [ input
-                    [ placeholder "E-mail"
-                    , type_ "email"
-                    , onInput (Msg.UpdateRegister "email")
-                    ] []
-                , ul [] (mapErrorsToLi model.userError.email)
-                ]
-            , div [ class "item-form" ]
-                [ input
-                    [ placeholder "E-mail confirmation"
-                    , type_ "email"
-                    , onInput (Msg.UpdateRegister "email_confirmation")
-                    ] []
-                , ul [] (mapErrorsToLi model.userError.email_confirmation)
-                ]
-            , regFormField model model.userError.password
-                ( "Password"
-                , "password"
-                , "password"
-                , "^[\\S]{6,30}$"
-                , "Sua senha deve conter no mínimo 6 caracteres alfanuméricos. Símbolos permitidos."
-                )
-            , regFormField model model.userError.password_confirmation
-                ( "Repeat Password"
-                , "password"
-                , "password_confirmation"
-                , "^[\\S]{6,30}$"
-                , "Confirme sua senha"
-                )
-            , h1 [ class "form-title" ] [ text "Optional Fields" ]
-            , select [ Html.Attributes.name "Gender", class "item-form", onChange (Msg.UpdateRegister "gender") ]
-                [ option [ value "", disabled True, selected True, class "disabled-item" ] [ text "Gender" ]
-                , option [ value "Male" ] [ text "Male" ]
-                , option [ value "Female" ] [ text "Female" ]
-                , option [ value "Other" ] [ text "Other" ]
-                ]
-            , div [ class "date-form" ]
-                [ monthPicker
-                , input [ pattern "([0]?[1-9]|[12][0-9]|3[01])", maxlength 2, placeholder "Day", class "date-item", onInput (Msg.UpdateDate "day") ] []
-                , input [ pattern "^(19|20)[0-9]{2}$", maxlength 4, placeholder "Year", class "date-item", onInput (Msg.UpdateDate "year") ] []
-                ]
-            , div [ class "item-form" ]
-                [ textarea [ maxlength 500, placeholder "About me", onInput (Msg.UpdateRegister "about_me") ] []
-                ]
-            , button [ class "submit-button", onClick Msg.DispatchUserRegistration ] [ text "Submit" ]
-            ]
-        ]
+    checkLogin model
 
 
 
+radio : String -> Html Msg
 radio option =
     Html.label [ class "radio-item" ]
         [ input [ type_ "radio", name "action", onClick (Msg.UpdateRegister "gender" option) ] []
@@ -120,7 +134,7 @@ onChange : (String -> msg) -> Attribute msg
 onChange handler =
     Html.Events.on "change" <| Json.map handler <| Json.at [ "target", "value" ] Json.string
 
-
+monthPicker : Html Msg
 monthPicker =
     select [ Html.Attributes.name "Month", class "date-month", onChange (Msg.UpdateDate "month") ]
         [ option [ value "", disabled True, selected True, class "disabled-item" ] [ text "Month" ]

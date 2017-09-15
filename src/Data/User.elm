@@ -24,6 +24,21 @@ type alias User =
     , about_me: String
     }
 
+type alias Auth =
+  { token : String
+  , user : LoggedUser
+  }
+
+type alias UserLogin =
+  { email: String
+  , password : String
+  }
+
+type alias LoggedUser =
+   { alias_: String
+   , email: String
+   }
+
 type alias UserError =
     { name : List String
     , alias_ : List String -- needed
@@ -38,6 +53,12 @@ type alias UserError =
     }
 
 
+emptyAuth : Auth
+emptyAuth = { token = "", user = emptyLoggedUser }
+
+emptyLoggedUser : LoggedUser
+emptyLoggedUser = {alias_ = "", email = ""}
+
 testUser : User
 testUser =
     { name = "Anonymous"
@@ -51,6 +72,12 @@ testUser =
     , birthday = "none"
     , about_me = "none"
     }
+
+testLogin : UserLogin
+testLogin =
+  { email = ""
+  , password = ""
+  }
 
 testUserError : UserError
 testUserError =
@@ -79,6 +106,18 @@ userErrorDecoder =
       |> optional "gender" (Dec.list Dec.string) []
       |> optional "birthday" (Dec.list Dec.string) []
       |> optional "about_me" (Dec.list Dec.string) []
+
+authDecoder : Dec.Decoder Auth
+authDecoder =
+    decode Auth
+      |> required "token" Dec.string
+      |> required "user" loggedUserDecoder
+
+loggedUserDecoder : Dec.Decoder LoggedUser
+loggedUserDecoder =
+    decode LoggedUser
+      |> required "alias" Dec.string
+      |> required "email" Dec.string
 
 {-| A decoder for user objects
 -}
@@ -127,6 +166,18 @@ toJson user =
         , ( "gender", str user.gender)
         , ( "birthday", str user.birthday)
         , ( "about_me", str user.about_me)
+        ]
+
+
+toJsonLogin : UserLogin -> Dec.Value
+toJsonLogin user =
+    let
+        str =
+            Enc.string
+    in
+    Enc.object
+        [ ( "email", str user.email )
+        , ( "password", str user.password)
         ]
 
 
