@@ -25,12 +25,13 @@ type alias SendProfile =
       , date_of_birth: String
       , website: String
       , about_me: String
-      , visibility: String
+      , user: Int
       }
 
 type alias ExpectRegister =
   { alias_: String
   , role: String
+  , profile : SendProfile
   }
 
 type alias Auth =
@@ -62,6 +63,13 @@ type alias UserError =
     }
 
 
+emptyExpectRegister : ExpectRegister
+emptyExpectRegister =
+  { alias_ = ""
+  , role = ""
+  , profile = testProfile
+  }
+
 emptyAuth : Auth
 emptyAuth = { token = "", user = emptyLoggedUser }
 
@@ -85,7 +93,7 @@ testProfile =
   , date_of_birth = ""
   , website = ""
   , about_me = ""
-  , visibility = ""
+  , user = 0
   }
 
 testLogin : UserLogin
@@ -129,6 +137,20 @@ registerDecoder =
   decode ExpectRegister
     |> required "alias" Dec.string
     |> required "role" Dec.string
+    |> required "profile" profileDecoder
+
+
+profileDecoder : Dec.Decoder SendProfile
+profileDecoder =
+  decode SendProfile
+    |> required "gender" Dec.string
+    |> required "phone" Dec.string
+    |> required "date_of_birth" Dec.string
+    |> required "website" Dec.string
+    |> required "about_me" Dec.string
+    |> required "user" Dec.int
+
+
 
 
 authDecoder : Dec.Decoder Auth
@@ -176,9 +198,9 @@ toJson user =
             Enc.string
     in
     Enc.object
-        [ ( "name", str user.name )
-        , ( "alias", str user.alias_ )
+        [ ( "alias", str user.alias_ )
         , ( "email", str user.email )
+        , ( "name", str user.name )
         , ( "password", str user.password)
         , ( "password_confirmation", str user.password_confirmation)
         , ( "school_id", str user.school_id)
@@ -195,3 +217,18 @@ toJsonLogin user =
         [ ( "email", str user.email )
         , ( "password", str user.password)
         ]
+
+toJsonSendProfile : SendProfile -> Dec.Value
+toJsonSendProfile sendProfile =
+    let
+      str =
+        Enc.string
+    in
+      Enc.object
+      [ ( "gender", str sendProfile.gender )
+      , ( "phone", str sendProfile.phone )
+      , ( "date_of_birth", str sendProfile.date_of_birth )
+      , ( "website", str sendProfile.website )
+      , ( "about_me", str sendProfile.about_me )
+      , ( "user", Enc.int sendProfile.user )
+      ]
