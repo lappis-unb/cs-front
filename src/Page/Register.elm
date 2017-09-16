@@ -118,7 +118,7 @@ checkLogin model =
                   , input [ pattern "^(19|20)[0-9]{2}$", maxlength 4, placeholder "Year", class "date-item", onInput (Msg.UpdateDate "year") ] []
                   ]
               , regProfile model model.userError.alias_
-                  ( "webSite"
+                  ( "website"
                   , "text"
                   , "website"
                   , "^[A-Za-z0-9_.@]{5,100}$"

@@ -23,6 +23,8 @@ type Msg
     | UpdateRegister String String
     | UpdateProfile String String
     | RequestReceiver (Result Http.Error ExpectRegister)
+    | SendProfileData (Result Http.Error SendProfile)
+    | ContinueRequestReceiver
     | GetLoginResponse (Result Http.Error Auth)
     | UpdateDate String String
     | DispatchLogin
@@ -98,9 +100,19 @@ update msg model =
 
         -- Handle successful user registration
         RequestReceiver (Ok register) ->
-          Debug.log "OK OK"
-          Debug.log(toString register)
-          (model, Cmd.none)
+          let
+            login = { email = model.user.email, password = model.user.password }
+          in
+            Debug.log "OK OK"
+            Debug.log(toString register)
+            ({model | expectRegister = register, userLogin = login}, Cmd.none)
+            |> andThen ContinueRequestReceiver
+
+        ContinueRequestReceiver ->
+          let
+              test= (sendProfileData model)
+          in
+            (model, test)
 
 
         -- Handle API error validations by parsing
@@ -113,11 +125,24 @@ update msg model =
             ({model | userError = newErrors}, Cmd.none)
 
 
+
+        RequestReceiver (Err (BadPayload string (response))) ->
+          Debug.log ("Toma aí ó:" ++ toString response)
+          Debug.log ("Tem mais:" ++ toString string)
+          (model, Cmd.none)
+
         -- Handle others API errors, Ex: connection timeout
         RequestReceiver (Err _) ->
           Debug.log "#DeuRuim de vez"
           (model, Cmd.none)
 
+        SendProfileData (Ok data) ->
+          Debug.log(toString model.expectRegister.profile.user)
+          (model, Cmd.none)
+
+        SendProfileData (Err _) ->
+          Debug.log("meeeeeeeee")
+          (model, Cmd.none)
 
         GetLoginResponse (Ok data) ->
           let
@@ -167,7 +192,7 @@ withElement el lst =
 
 dateUserUpdate : SendProfile -> Date -> SendProfile
 dateUserUpdate profile date =
-  {profile | date_of_birth = date.month ++ "-" ++ date.day ++ "-" ++ date.year}
+  {profile | date_of_birth = date.year ++ "-" ++ date.month ++ "-" ++ date.day}
 
 
 dateReceiver : Date -> String -> String -> Date
@@ -232,8 +257,6 @@ profileReceiver sendProfile inputModel inputValue =
       {sendProfile | website = inputValue}
     "about_me" ->
       {sendProfile | about_me = inputValue}
-    "visibility" ->
-      {sendProfile | visibility = inputValue}
     _ ->
       sendProfile
 
@@ -271,6 +294,22 @@ sendRegData user =
                 }
     in
         userRegRequest |> Http.send RequestReceiver
+
+sendProfileData : Model -> Cmd Msg
+sendProfileData model =
+    let
+        profileUpdateRequest =
+            Http.request
+                { body = Data.User.toJsonSendProfile model.sendProfile |> Http.jsonBody
+                , expect = Http.expectJson profileDecoder
+                , headers = [Http.header "token" model.token]
+                , method = "PUT"
+                , timeout = Nothing
+                , url = "http://localhost:8000/api/profile/" ++ (toString model.expectRegister.profile.user)
+                , withCredentials = False
+                }
+    in
+        profileUpdateRequest |> Http.send SendProfileData
 
 
 andThen : Msg -> ( Model, Cmd Msg ) -> ( Model, Cmd Msg )
