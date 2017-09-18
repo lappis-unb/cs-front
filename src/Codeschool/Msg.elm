@@ -27,6 +27,7 @@ type Msg
     | ContinueRequestReceiver
     | GetLoginResponse (Result Http.Error Auth)
     | UpdateDate String String
+    | LoginAfterRegistration
     | DispatchLogin
     | UpdateLogin String String
     | LogOut
@@ -88,6 +89,15 @@ update msg model =
             Debug.log(toString data)
             (model, data)
 
+        LoginAfterRegistration ->
+          let
+            data = sendLoginData model.userLogin
+          in
+            Debug.log(toString data)
+            (model, data)
+            |> andThen ContinueRequestReceiver
+
+
 
         UpdateDate field value ->
             let
@@ -106,12 +116,13 @@ update msg model =
             Debug.log "OK OK"
             Debug.log(toString register)
             ({model | expectRegister = register, userLogin = login}, Cmd.none)
-            |> andThen ContinueRequestReceiver
+            |> andThen LoginAfterRegistration
 
         ContinueRequestReceiver ->
           let
               test= (sendProfileData model)
           in
+            Debug.log("oi cheguei aqui")
             (model, test)
 
 
@@ -302,13 +313,14 @@ sendProfileData model =
             Http.request
                 { body = Data.User.toJsonSendProfile model.sendProfile |> Http.jsonBody
                 , expect = Http.expectJson profileDecoder
-                , headers = [Http.header "token" model.token]
+                , headers = [Http.header "Token" ("JWT " ++ model.token)]
                 , method = "PUT"
                 , timeout = Nothing
                 , url = "http://localhost:8000/api/profile/" ++ (toString model.expectRegister.profile.user)
                 , withCredentials = False
                 }
     in
+        Debug.log("aqui????????" ++ "Token:" ++ model.token )
         profileUpdateRequest |> Http.send SendProfileData
 
 
