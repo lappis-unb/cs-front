@@ -13,11 +13,11 @@ checkLogin model =
   case model.isLogged of
     True ->
       div []
-          [ simpleHero model.loggedUser.alias_ "Profile" "simple-hero"
+          [ simpleHero model.auth.user.alias_ "Profile" "simple-hero"
           , container []
               [ h1 [] [ text "Personal info" ]
-              , p [] [ text ("Name: " ++ model.loggedUser.alias_) ]
-              , p [] [ text ("E-mail: " ++ model.loggedUser.email) ]
+              , p [] [ text ("Name: " ++ model.auth.user.alias_) ]
+              , p [] [ text ("E-mail: " ++ model.auth.user.email) ]
               ]
           ]
     False ->

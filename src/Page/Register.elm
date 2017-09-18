@@ -24,7 +24,7 @@ regFormField model fieldErrors attributes =
                 [ pattern regex
                 , placeholder placeholderText
                 , type_ fieldType
-                , onInput (Msg.UpdateRegister modelValue)
+                , onInput (Msg.UpdateUserRegister modelValue)
                 , title errorMessage
                 ] []
             , ul [] (mapErrorsToLi fieldErrors)
@@ -40,7 +40,7 @@ regProfile model fieldErrors attributes =
                 [ pattern regex
                 , placeholder placeholderText
                 , type_ fieldType
-                , onInput (Msg.UpdateProfile modelValue)
+                , onInput (Msg.UpdateProfileRegister modelValue)
                 , title errorMessage
                 ] []
             , ul [] (mapErrorsToLi fieldErrors)
@@ -80,7 +80,7 @@ checkLogin model =
                   [ input
                       [ placeholder "E-mail"
                       , type_ "email"
-                      , onInput (Msg.UpdateRegister "email")
+                      , onInput (Msg.UpdateUserRegister "email")
                       ] []
                   , ul [] (mapErrorsToLi model.userError.email)
                   ]
@@ -99,7 +99,7 @@ checkLogin model =
                   , "Confirme sua senha"
                   )
               , h1 [ class "form-title" ] [ text "Optional Fields" ]
-              , select [ Html.Attributes.name "Gender", class "item-form", onChange (Msg.UpdateProfile "gender") ]
+              , select [ Html.Attributes.name "Gender", class "item-form", onChange (Msg.UpdateProfileRegister "gender") ]
                   [ option [ value "", disabled True, selected True, class "disabled-item" ] [ text "Gender" ]
                   , option [ value "Male" ] [ text "Male" ]
                   , option [ value "Female" ] [ text "Female" ]
@@ -125,7 +125,7 @@ checkLogin model =
                   , "Por favor insira um website válido"
                   )
               , div [ class "item-form" ]
-                  [ textarea [ maxlength 500, placeholder "About me", onInput (Msg.UpdateProfile "about_me") ] []
+                  [ textarea [ maxlength 500, placeholder "About me", onInput (Msg.UpdateProfileRegister "about_me") ] []
                   ]
               , button [ class "submit-button", onClick Msg.DispatchUserRegistration ] [ text "Submit" ]
               ]
@@ -147,7 +147,7 @@ view model =
 radio : String -> Html Msg
 radio option =
     Html.label [ class "radio-item" ]
-        [ input [ type_ "radio", name "action", onClick (Msg.UpdateRegister "gender" option) ] []
+        [ input [ type_ "radio", name "action", onClick (Msg.UpdateUserRegister "gender" option) ] []
         , text option
         ]
 
