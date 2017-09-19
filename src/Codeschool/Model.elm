@@ -82,6 +82,7 @@ type Route
     | Learn
     | Help
     | QuestionList
+    | QuestionCode Id
     | Question Id
     | Social
     | Profile

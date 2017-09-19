@@ -18,6 +18,7 @@ matchers =
         , map Help (s "help")
         , map Question (s "questions" </> int)
         , map QuestionList (s "questions")
+        , map QuestionCode (s "code" </> int)
         , map Social (s "social")
         , map Profile (s "profile")
         , map Logout (s "logout")
@@ -73,6 +74,9 @@ baseReverse route =
 
         QuestionList ->
             "questions/"
+
+        QuestionCode id ->
+            "code/" ++ toString id
 
         Social ->
             "social"
