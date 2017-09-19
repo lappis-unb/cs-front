@@ -62,6 +62,86 @@ update msg model =
         GoBack int->
          (model, back int)
 
+-- Dispatchs
+        DispatchUserRegistration ->
+          let
+            data = sendRegistrationData model.userRegister
+          in
+            (model, data)
+
+        DispatchLogin ->
+          let
+            data = sendLoginData model.userLogin
+          in
+            (model, data)
+
+-- OK Responses
+        GetLoginResponse (Ok data) ->
+          Debug.log("Logado com sucesso")
+            { model | auth = {user = data.user, token = data.token}, isLogged = True} ! []
+            |> andThen (ChangeRoute Codeschool.Model.Index)
+
+        -- Handle successful userRegister registration
+        GetRegistrationResponse (Ok register) ->
+          let
+            login = { email = model.userRegister.email, password = model.userRegister.password }
+          in
+            Debug.log "OK OK Registration"
+            Debug.log(toString register)
+            ({model | expectRegister = register, userLogin = login}, Cmd.none)
+            |> andThen LoginAfterRegistration
+
+        GetProfileResponse (Ok data) ->
+          Debug.log "OK OK Profile"
+          Debug.log(toString model.expectRegister.profile.user)
+          (model, Cmd.none)
+
+        LoginAfterRegistration ->
+          let
+            data = sendLoginData model.userLogin
+          in
+            Debug.log("Logando após cadastro")
+            Debug.log(toString data)
+            (model, data)
+            |> andThen ContinueRegistration
+
+        ContinueRegistration ->
+          let
+              test= (sendProfileData model)
+          in
+            Debug.log("Continuando Registro")
+            (model, test)
+
+-- Errors Responses
+        GetLoginResponse (Result.Err _) ->
+          Debug.log("Erro Geral GetLogin")
+          (model, Cmd.none)
+
+        -- Handle API error validations by parsing
+        -- the json response and updating the UserError model
+        GetRegistrationResponse (Err (BadStatus response)) ->
+         let
+             newErrors = userErrorUpdate model.userError response.body
+         in
+            Debug.log "Bad Status!"
+            ({model | userError = newErrors}, Cmd.none)
+
+        GetRegistrationResponse (Err (BadPayload string (response))) ->
+          Debug.log ("Response:" ++ toString response)
+          Debug.log ("Tem mais:" ++ toString string)
+          (model, Cmd.none)
+
+        -- Handle others API errors, Ex: connection timeout
+        GetRegistrationResponse (Err _) ->
+          Debug.log "Erro Geral GetRegistration"
+          (model, Cmd.none)
+
+        GetProfileResponse (Err _) ->
+          Debug.log("Erro Geral GetProfile")
+          (model, Cmd.none)
+
+
+-- Form handling
         UpdateUserRegister inputModel inputValue ->
             let
                 newUser = formReceiver model.userRegister inputModel inputValue
@@ -80,31 +160,6 @@ update msg model =
             in
                 ({model | userLogin = newLogin}, Cmd.none)
 
-        DispatchUserRegistration ->
-          let
-              data = sendRegistrationData model.userRegister
-
-          in
-        --    Debug.log (toString data)
-            (model, data)
-
-        DispatchLogin ->
-          let
-            data = sendLoginData model.userLogin
-          in
-            Debug.log(toString data)
-            (model, data)
-
-        LoginAfterRegistration ->
-          let
-            data = sendLoginData model.userLogin
-          in
-            Debug.log(toString data)
-            (model, data)
-            |> andThen ContinueRegistration
-
-
-
         UpdateDate field value ->
             let
               newDate = dateReceiver model.date field value
@@ -112,63 +167,6 @@ update msg model =
               newModel = {model | date = newDate, profileRegister = newProfile}
             in
                newModel ! []
-
-
-        -- Handle successful userRegister registration
-        GetRegistrationResponse (Ok register) ->
-          let
-            login = { email = model.userRegister.email, password = model.userRegister.password }
-          in
-            Debug.log "OK OK"
-            Debug.log(toString register)
-            ({model | expectRegister = register, userLogin = login}, Cmd.none)
-            |> andThen LoginAfterRegistration
-
-        ContinueRegistration ->
-          let
-              test= (sendProfileData model)
-          in
-            Debug.log("oi cheguei aqui")
-            (model, test)
-
-
-        -- Handle API error validations by parsing
-        -- the json response and updating the UserError model
-        GetRegistrationResponse (Err (BadStatus response)) ->
-         let
-             newErrors = userErrorUpdate model.userError response.body
-         in
-            Debug.log "#DeuRuim validacao"
-            ({model | userError = newErrors}, Cmd.none)
-
-
-
-        GetRegistrationResponse (Err (BadPayload string (response))) ->
-          Debug.log ("Toma aí ó:" ++ toString response)
-          Debug.log ("Tem mais:" ++ toString string)
-          (model, Cmd.none)
-
-        -- Handle others API errors, Ex: connection timeout
-        GetRegistrationResponse (Err _) ->
-          Debug.log "#DeuRuim de vez"
-          (model, Cmd.none)
-
-        GetProfileResponse (Ok data) ->
-          Debug.log(toString model.expectRegister.profile.user)
-          (model, Cmd.none)
-
-        GetProfileResponse (Err _) ->
-          Debug.log("meeeeeeeee")
-          (model, Cmd.none)
-
-        GetLoginResponse (Ok data) ->
-          Debug.log("Deu bom")
-            { model | auth = {user = data.user, token = data.token}, isLogged = True} ! []
-            |> andThen (ChangeRoute Codeschool.Model.Index)
-
-        GetLoginResponse (Result.Err _) ->
-          Debug.log("Deu ruim")
-          (model, Cmd.none)
 
         LogOut ->
             {model | auth = emptyAuth, isLogged = False } ! []
