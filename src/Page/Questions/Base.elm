@@ -69,36 +69,47 @@ questionInfo cls =
 
 questionOne : QuestionInfo
 questionOne =
-    { questionName = "VEMMM MALUCOOOOO"
-    , shortDescription = "DESCREVE INSANOOOOOOOOOOOOOO."
-    , icon = "code"
+    { questionName = "Basic"
+    , shortDescription = "Elementary programming problems."
+    , icon = "sentiment_very_satisfied"
     }
 
 
 questionTwo : QuestionInfo
 questionTwo =
-    { questionName = "nome da questão pois é"
-    , shortDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius tellus velit, ut accumsan odio tincidunt in."
-    , icon = "sentiment_very_satisfied"
+    { questionName = "Conditionals"
+    , shortDescription = "Conditional flow control (if/else)."
+    , icon = "code"
     }
-
 
 questionThree : QuestionInfo
 questionThree =
-    { questionName = "Sequência de Fibonacci"
-    , shortDescription = "Questão para testar seus conhecimentos sobre como funciona o algoritmo de fibonacci"
-    , icon = "all_out"
+    { questionName = "Loops"
+    , shortDescription = "Iterations with for/while commands"
+    , icon = "loop"
     }
-
 
 questionFour : QuestionInfo
 questionFour =
-    { questionName = "Sequência de Fibonacci"
-    , shortDescription = "Questão para testar seus conhecimentos sobre como funciona o algoritmo de fibonacci"
-    , icon = "all_out"
+    { questionName = "Functions"
+    , shortDescription = "Organize code using functions."
+    , icon = "functions"
     }
 
+questionFive : QuestionInfo
+questionFive =
+    { questionName = "Files"
+    , shortDescription = "Open, process and write files."
+    , icon = "insert_drive_file"
+    }
+
+questionSix : QuestionInfo
+questionSix =
+    { questionName = "Lists"
+    , shortDescription = "Linear data structures."
+    , icon = "list"
+    }
 
 clsList : List QuestionInfo
 clsList =
-    [ questionOne, questionTwo, questionThree, questionFour ]
+    [ questionOne, questionTwo, questionThree, questionFour, questionFive, questionSix ]
