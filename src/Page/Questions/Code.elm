@@ -17,12 +17,19 @@ import Ui.Parts exposing (promoSimple, promoTable, simpleHero)
 
 view : Model -> Html msg
 view m =
-    div [ class "question-info-card" ]
-      [ Ui.Generic.icon [ class "question-info-card__icon" ] "code"
-      , h1 [ class "question-info-card__title" ]
-          [ text "Questão mega hard"
-          ]
-      , p [ class "question-info-card__description" ]
-          [ text "Essa questão foi desenvolvida para ferrar a vida de vocês"
-          ]
-      ]
+    div []
+        [ simpleHero "Idade" "" "simple-hero__page-blue"
+        , div [ class "main-container" ]
+            [ text
+              """
+              Codifique um software receba o ano de nascimento de uma pessoa e o ano atual. Calcule e mostre:
+              a) A idade dessa pessoa.
+              b) Quantos anos essa pessoa terá  em 2018.
+              """
+            ]
+          , div [ class "item-question" ]
+              [ textarea [ class "item-question", maxlength 1000, placeholder "Insert your code" ] []
+              ]
+          , button [ class "cancel-button" ] [ text "Cancel" ]
+          , button [ class "send-button" ] [ text "Send to evaluation" ]
+        ]

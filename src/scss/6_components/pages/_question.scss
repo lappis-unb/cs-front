@@ -15,10 +15,6 @@
     width: 30%;
     padding: 20px;
 
-//    > * {
-
-//    }
-
     &__title {
       position: relative;
       align-self: center;
@@ -60,4 +56,33 @@
       min-width: 15em;
   }
 
+}
+
+.item-question {
+    width: 1000px;
+    height: 300px;
+    margin: 10px;
+    align: center;
+}
+
+.cancel-button {
+    width: 10px;
+    height: 40px;
+    margin: 10px;
+    background-color: $color-teal;
+    color: white;
+    border-radius: 5px;
+    width: 45%;
+    margin-left: 3%;
+}
+
+.send-button {
+    width: 10px;
+    height: 40px;
+    margin: 10px;
+    background-color: $color-teal;
+    color: white;
+    border-radius: 5px;
+    width: 45%;
+    margin-right: 3%;
 }
