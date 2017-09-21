@@ -27,10 +27,8 @@ type Msg
     | DispatchLogin
     -- Responses
     | GetRegistrationResponse (Result Http.Error ExpectRegisterResponse)
-    | GetProfileResponse (Result Http.Error ProfileForm)
     | GetLoginResponse (Result Http.Error Auth)
     | LoginAfterRegistration
-    | ContinueRegistration
     -- Form handling
     | UpdateUserRegister String String
     | UpdateProfileRegister String String
@@ -91,11 +89,6 @@ update msg model =
             ({model | expectRegister = register, userLogin = login}, Cmd.none)
             |> andThen LoginAfterRegistration
 
-        GetProfileResponse (Ok data) ->
-          Debug.log "OK OK Profile"
-          Debug.log(toString model.expectRegister.profile.user)
-          (model, Cmd.none)
-
         LoginAfterRegistration ->
           let
             data = sendLoginData model.userLogin
@@ -103,14 +96,7 @@ update msg model =
             Debug.log("Logando após cadastro")
             Debug.log(toString data)
             (model, data)
-            |> andThen ContinueRegistration
 
-        ContinueRegistration ->
-          let
-              test= (sendProfileData model)
-          in
-            Debug.log("Continuando Registro")
-            (model, test)
 
 -- Errors Responses
         GetLoginResponse (Result.Err _) ->
@@ -136,10 +122,6 @@ update msg model =
           Debug.log "Erro Geral GetRegistration"
           (model, Cmd.none)
 
-        GetProfileResponse (Err _) ->
-          Debug.log("Erro Geral GetProfile")
-          (model, Cmd.none)
-
 
 -- Form handling
         UpdateUserRegister inputModel inputValue ->
@@ -151,8 +133,16 @@ update msg model =
         UpdateProfileRegister inputModel inputValue ->
             let
               newProfile = profileReceiver model.profileRegister inputModel inputValue
+              newUser =  { name = model.userRegister.name
+                         , alias_ = model.userRegister.alias_
+                         , email = model.userRegister.email
+                         , password = model.userRegister.password
+                         , password_confirmation = model.userRegister.password_confirmation
+                         , school_id = model.userRegister.school_id
+                         , profile = newProfile
+                         }
             in
-              ({model | profileRegister = newProfile}, Cmd.none)
+              ({model | userRegister = newUser, profileRegister = newProfile}, Cmd.none)
 
         UpdateLogin inputModel inputValue ->
             let
@@ -164,7 +154,16 @@ update msg model =
             let
               newDate = dateReceiver model.date field value
               newProfile = dateUserUpdate model.profileRegister newDate
-              newModel = {model | date = newDate, profileRegister = newProfile}
+              newUser =  { name = model.userRegister.name
+                         , alias_ = model.userRegister.alias_
+                         , email = model.userRegister.email
+                         , password = model.userRegister.password
+                         , password_confirmation = model.userRegister.password_confirmation
+                         , school_id = model.userRegister.school_id
+                         , profile = newProfile
+                         }
+              newModel = {model | date = newDate, profileRegister = newProfile, userRegister = newUser}
+
             in
                newModel ! []
 
@@ -200,7 +199,7 @@ withElement el lst =
 
 dateUserUpdate : ProfileForm -> Date -> ProfileForm
 dateUserUpdate profile date =
-  {profile | date_of_birth = date.year ++ "-" ++ date.month ++ "-" ++ date.day}
+  {profile | date_of_birth = Just (date.year ++ "-" ++ date.month ++ "-" ++ date.day)}
 
 
 dateReceiver : Date -> String -> String -> Date
@@ -256,11 +255,29 @@ profileReceiver : ProfileForm -> String -> String -> ProfileForm
 profileReceiver profileRegister inputModel inputValue =
   case inputModel of
     "gender" ->
-      {profileRegister | gender = inputValue}
+      let
+        g =
+          case inputValue of
+            "Male" ->
+              Just 0
+            "Female" ->
+              Just 1
+            "Others" ->
+              Just 2
+
+            _ ->
+              Nothing
+      in
+        {profileRegister | gender = g}
+
     "phone" ->
       {profileRegister | phone = inputValue}
     "date_of_birth" ->
-      {profileRegister | date_of_birth = inputValue}
+        case inputValue of
+          "" ->
+            {profileRegister | date_of_birth = Nothing}
+          _ ->
+            {profileRegister | date_of_birth = (Just inputValue)}
     "website" ->
       {profileRegister | website = inputValue}
     "about_me" ->
@@ -297,28 +314,28 @@ sendRegistrationData userRegister =
                 , headers = []
                 , method = "POST"
                 , timeout = Nothing
-                , url = "http://localhost:8000/api/users/"
+                , url = "http://localhost:8000/api/detail/"
                 , withCredentials = False
                 }
     in
         userRegRequest |> Http.send GetRegistrationResponse
 
-sendProfileData : Model -> Cmd Msg
-sendProfileData model =
-    let
-        profileUpdateRequest =
-            Http.request
-                { body = Data.Registration.toJsonSendProfile model.profileRegister |> Http.jsonBody
-                , expect = Http.expectJson profileDecoder
-                , headers = [Http.header "Token" ("JWT " ++ model.auth.token)]
-                , method = "PUT"
-                , timeout = Nothing
-                , url = "http://localhost:8000/api/profile/" ++ (toString model.expectRegister.profile.user)
-                , withCredentials = False
-                }
-    in
-        Debug.log("aqui????????" ++ "Token:" ++ model.auth.token )
-        profileUpdateRequest |> Http.send GetProfileResponse
+-- sendProfileData : Model -> Cmd Msg
+-- sendProfileData model =
+--     let
+--         profileUpdateRequest =
+--             Http.request
+--                 { body = Data.Registration.toJsonSendProfile model.profileRegister |> Http.jsonBody
+--                 , expect = Http.expectJson profileDecoder
+--                 , headers = [Http.header "Token" ("JWT " ++ model.auth.token)]
+--                 , method = "PUT"
+--                 , timeout = Nothing
+--                 , url = "http://localhost:8000/api/profile/" ++ (toString model.expectRegister.profile.user)
+--                 , withCredentials = False
+--                 }
+--     in
+--         Debug.log("aqui????????" ++ "Token:" ++ model.auth.token )
+--         profileUpdateRequest |> Http.send GetProfileResponse
 
 
 andThen : Msg -> ( Model, Cmd Msg ) -> ( Model, Cmd Msg )

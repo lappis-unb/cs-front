@@ -13,6 +13,7 @@ type alias UserForm =
     , password : String -- needed
     , password_confirmation : String -- needed
     , school_id: String -- needed
+    , profile : ProfileForm
     }
 
 -- User register initialization
@@ -24,6 +25,7 @@ emptyUserRegister =
     , password = "123456"
     , password_confirmation = "123456"
     , school_id = "15/0344750"
+    , profile = emptyProfile
     }
 
 
@@ -38,6 +40,7 @@ userDecoder =
       |> required "password" Dec.string
       |> required "password_confirmation" Dec.string
       |> required "school_id" Dec.string
+      |> required "profile" profileDecoder
 
 {-| Convert user to JSON
 -}
@@ -54,15 +57,16 @@ toJson user =
         , ( "password", str user.password)
         , ( "password_confirmation", str user.password_confirmation)
         , ( "school_id", str user.school_id)
+        , ( "profile", toJsonSendProfile user.profile)
         ]
 
 
 {-| Represents a simple profile form
 -}
 type alias ProfileForm =
-      { gender: String
+      { gender: Maybe Int
       , phone : String
-      , date_of_birth: String
+      , date_of_birth: Maybe String
       , website: String
       , about_me: String
       , user: Int
@@ -71,9 +75,9 @@ type alias ProfileForm =
 -- Profile register initialization
 emptyProfile : ProfileForm
 emptyProfile =
-  { gender = ""
+  { gender =  Nothing
   , phone = ""
-  , date_of_birth = ""
+  , date_of_birth = Nothing
   , website = ""
   , about_me = ""
   , user = 0
@@ -87,21 +91,28 @@ toJsonSendProfile profileRegister =
         Enc.string
     in
       Enc.object
-      [ ( "gender", str profileRegister.gender )
+      [ ( "gender", (maybeExtractor profileRegister.gender Enc.int) )
       , ( "phone", str profileRegister.phone )
-      , ( "date_of_birth", str profileRegister.date_of_birth )
+      , ( "date_of_birth", (maybeExtractor profileRegister.date_of_birth Enc.string) )
       , ( "website", str profileRegister.website )
       , ( "about_me", str profileRegister.about_me )
       , ( "user", Enc.int profileRegister.user )
       ]
+maybeExtractor: Maybe a -> (a ->Enc.Value) -> Enc.Value
+maybeExtractor a type_ =
+  case a of
+    Nothing ->
+      Enc.null
+    Just val ->
+      type_ val
 
 -- profile register decoder
 profileDecoder : Dec.Decoder ProfileForm
 profileDecoder =
   decode ProfileForm
-    |> required "gender" Dec.string
+    |> required "gender" (Dec.maybe Dec.int)
     |> required "phone" Dec.string
-    |> required "date_of_birth" Dec.string
+    |> required "date_of_birth" (Dec.maybe Dec.string)
     |> required "website" Dec.string
     |> required "about_me" Dec.string
     |> required "user" Dec.int
