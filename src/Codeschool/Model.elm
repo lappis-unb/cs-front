@@ -20,7 +20,6 @@ import Toast exposing (Toast)
 -}
 type alias Model =
     { userRegister : UserForm
-    , profileRegister : ProfileForm
     , expectRegister : ExpectRegisterResponse
     , userError: UserError
     , userLogin : UserLogin
@@ -41,7 +40,6 @@ type alias Model =
 init : Model
 init =
     { userRegister = emptyUserRegister
-    , profileRegister = emptyProfile
     , expectRegister = emptyExpectRegisterResponse
     , userError = emptyUserError
     , userLogin = emptyLogin

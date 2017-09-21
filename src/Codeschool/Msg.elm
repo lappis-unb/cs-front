@@ -132,17 +132,11 @@ update msg model =
 
         UpdateProfileRegister inputModel inputValue ->
             let
-              newProfile = profileReceiver model.profileRegister inputModel inputValue
-              newUser =  { name = model.userRegister.name
-                         , alias_ = model.userRegister.alias_
-                         , email = model.userRegister.email
-                         , password = model.userRegister.password
-                         , password_confirmation = model.userRegister.password_confirmation
-                         , school_id = model.userRegister.school_id
-                         , profile = newProfile
-                         }
+              newProfile = profileReceiver model.userRegister.profile inputModel inputValue
+              userRegister = model.userRegister
+              newUser = { userRegister | profile = newProfile}
             in
-              ({model | userRegister = newUser, profileRegister = newProfile}, Cmd.none)
+              ({model | userRegister = newUser}, Cmd.none)
 
         UpdateLogin inputModel inputValue ->
             let
@@ -153,16 +147,10 @@ update msg model =
         UpdateDate field value ->
             let
               newDate = dateReceiver model.date field value
-              newProfile = dateUserUpdate model.profileRegister newDate
-              newUser =  { name = model.userRegister.name
-                         , alias_ = model.userRegister.alias_
-                         , email = model.userRegister.email
-                         , password = model.userRegister.password
-                         , password_confirmation = model.userRegister.password_confirmation
-                         , school_id = model.userRegister.school_id
-                         , profile = newProfile
-                         }
-              newModel = {model | date = newDate, profileRegister = newProfile, userRegister = newUser}
+              newProfile = dateUserUpdate model.userRegister.profile newDate
+              userRegister = model.userRegister
+              newUser = {userRegister | profile = newProfile}
+              newModel = {model | date = newDate, userRegister = newUser}
 
             in
                newModel ! []
