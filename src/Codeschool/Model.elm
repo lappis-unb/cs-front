@@ -11,13 +11,16 @@ module Codeschool.Model
 import Data.Classroom exposing (Classroom, ClassroomInfo)
 import Data.Date exposing (..)
 import Data.User exposing (..)
+import Data.Registration exposing (..)
+import Data.Login exposing (..)
 import Time exposing (Time)
 import Toast exposing (Toast)
 
 {-| Main page Model
 -}
 type alias Model =
-    { user : User
+    { userRegister : UserForm
+    , expectRegister : ExpectRegisterResponse
     , userError: UserError
     , userLogin : UserLogin
     , route : Route
@@ -28,8 +31,6 @@ type alias Model =
     , time : Time
     , toast : Toast String
     , auth : Auth
-    , token : String
-    , loggedUser : LoggedUser
     , isLogged : Bool
     }
 
@@ -38,9 +39,10 @@ type alias Model =
 -}
 init : Model
 init =
-    { user = testUser
-    , userError = testUserError
-    , userLogin = testLogin
+    { userRegister = emptyUserRegister
+    , expectRegister = emptyExpectRegisterResponse
+    , userError = emptyUserError
+    , userLogin = emptyLogin
     , route = Index
     , classroomInfoList = []
     , classroom = Nothing
@@ -49,8 +51,6 @@ init =
     , time = 0
     , toast = Toast.initWithTransitionDelay (Time.second * 1.5)
     , auth = emptyAuth
-    , token = ""
-    , loggedUser = emptyLoggedUser
     , isLogged = False
     }
 
@@ -82,7 +82,7 @@ type Route
     | QuestionList
     | Question Id
     | Social
-    | Profile Id
+    | Profile
     | Logout
     | Actions
     | Register

@@ -36,7 +36,7 @@ checkLogin model place =
       True ->
         case place of
           "hero" ->
-              simpleHero ("Welcome to Codeschool, " ++ model.loggedUser.alias_) "" "simple-hero"
+              simpleHero ("Welcome to Codeschool, " ++ model.auth.user.alias_) "" "simple-hero"
           "promo" ->
               div []
                   [ text

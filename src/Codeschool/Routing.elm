@@ -19,7 +19,7 @@ matchers =
         , map Question (s "questions" </> int)
         , map QuestionList (s "questions")
         , map Social (s "social")
-        , map Profile (s "profile" </> int)
+        , map Profile (s "profile")
         , map Logout (s "logout")
         , map Actions (s "actions")
         , map Register (s "register")
@@ -77,8 +77,8 @@ baseReverse route =
         Social ->
             "social"
 
-        Profile id ->
-            "profile/" ++ toString id
+        Profile ->
+            "profile/"
 
         Logout ->
             "logout/"

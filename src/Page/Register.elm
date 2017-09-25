@@ -24,7 +24,23 @@ regFormField model fieldErrors attributes =
                 [ pattern regex
                 , placeholder placeholderText
                 , type_ fieldType
-                , onInput (Msg.UpdateRegister modelValue)
+                , onInput (Msg.UpdateUserRegister modelValue)
+                , title errorMessage
+                ] []
+            , ul [] (mapErrorsToLi fieldErrors)
+            ]
+
+regProfile : Model -> List String -> (String, String, String, String, String) -> Html Msg
+regProfile model fieldErrors attributes =
+    let
+        (placeholderText, fieldType, modelValue, regex, errorMessage) = attributes
+    in
+        div [ class "item-form" ]
+            [ input
+                [ pattern regex
+                , placeholder placeholderText
+                , type_ fieldType
+                , onInput (Msg.UpdateProfileRegister modelValue)
                 , title errorMessage
                 ] []
             , ul [] (mapErrorsToLi fieldErrors)
@@ -64,17 +80,9 @@ checkLogin model =
                   [ input
                       [ placeholder "E-mail"
                       , type_ "email"
-                      , onInput (Msg.UpdateRegister "email")
+                      , onInput (Msg.UpdateUserRegister "email")
                       ] []
                   , ul [] (mapErrorsToLi model.userError.email)
-                  ]
-              , div [ class "item-form" ]
-                  [ input
-                      [ placeholder "E-mail confirmation"
-                      , type_ "email"
-                      , onInput (Msg.UpdateRegister "email_confirmation")
-                      ] []
-                  , ul [] (mapErrorsToLi model.userError.email_confirmation)
                   ]
               , regFormField model model.userError.password
                   ( "Password"
@@ -91,19 +99,33 @@ checkLogin model =
                   , "Confirme sua senha"
                   )
               , h1 [ class "form-title" ] [ text "Optional Fields" ]
-              , select [ Html.Attributes.name "Gender", class "item-form", onChange (Msg.UpdateRegister "gender") ]
+              , select [ Html.Attributes.name "Gender", class "item-form", onChange (Msg.UpdateProfileRegister "gender") ]
                   [ option [ value "", disabled True, selected True, class "disabled-item" ] [ text "Gender" ]
                   , option [ value "Male" ] [ text "Male" ]
                   , option [ value "Female" ] [ text "Female" ]
-                  , option [ value "Other" ] [ text "Other" ]
+                  , option [ value "Others" ] [ text "Others" ]
                   ]
+              , regProfile model model.userError.alias_
+                  ( "Phone"
+                  , "text"
+                  , "phone"
+                  , "^[0-9]{8,20}$"
+                  , "Por favor insira um telefone válido."
+                  )
               , div [ class "date-form" ]
                   [ monthPicker
                   , input [ pattern "([0]?[1-9]|[12][0-9]|3[01])", maxlength 2, placeholder "Day", class "date-item", onInput (Msg.UpdateDate "day") ] []
                   , input [ pattern "^(19|20)[0-9]{2}$", maxlength 4, placeholder "Year", class "date-item", onInput (Msg.UpdateDate "year") ] []
                   ]
+              , regProfile model model.userError.alias_
+                  ( "website"
+                  , "text"
+                  , "website"
+                  , "^[A-Za-z0-9_.@]{5,100}$"
+                  , "Por favor insira um website válido"
+                  )
               , div [ class "item-form" ]
-                  [ textarea [ maxlength 500, placeholder "About me", onInput (Msg.UpdateRegister "about_me") ] []
+                  [ textarea [ maxlength 500, placeholder "About me", onInput (Msg.UpdateProfileRegister "about_me") ] []
                   ]
               , button [ class "submit-button", onClick Msg.DispatchUserRegistration ] [ text "Submit" ]
               ]
@@ -125,7 +147,7 @@ view model =
 radio : String -> Html Msg
 radio option =
     Html.label [ class "radio-item" ]
-        [ input [ type_ "radio", name "action", onClick (Msg.UpdateRegister "gender" option) ] []
+        [ input [ type_ "radio", name "action", onClick (Msg.UpdateUserRegister "gender" option) ] []
         , text option
         ]
 
@@ -138,16 +160,16 @@ monthPicker : Html Msg
 monthPicker =
     select [ Html.Attributes.name "Month", class "date-month", onChange (Msg.UpdateDate "month") ]
         [ option [ value "", disabled True, selected True, class "disabled-item" ] [ text "Month" ]
-        , option [ value "January" ] [ text "January" ]
-        , option [ value "February" ] [ text "February" ]
-        , option [ value "March" ] [ text "March" ]
-        , option [ value "April" ] [ text "April" ]
-        , option [ value "May" ] [ text "May" ]
-        , option [ value "June" ] [ text "June" ]
-        , option [ value "July" ] [ text "July" ]
-        , option [ value "August" ] [ text "August" ]
-        , option [ value "September" ] [ text "September" ]
-        , option [ value "October" ] [ text "October" ]
-        , option [ value "November" ] [ text "November" ]
-        , option [ value "December" ] [ text "December" ]
+        , option [ value "01" ] [ text "January" ]
+        , option [ value "02" ] [ text "February" ]
+        , option [ value "03" ] [ text "March" ]
+        , option [ value "04" ] [ text "April" ]
+        , option [ value "05" ] [ text "May" ]
+        , option [ value "06" ] [ text "June" ]
+        , option [ value "07" ] [ text "July" ]
+        , option [ value "08" ] [ text "August" ]
+        , option [ value "09" ] [ text "September" ]
+        , option [ value "10" ] [ text "October" ]
+        , option [ value "11" ] [ text "November" ]
+        , option [ value "12" ] [ text "December" ]
         ]
