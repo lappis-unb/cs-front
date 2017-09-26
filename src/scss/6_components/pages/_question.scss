@@ -40,6 +40,11 @@
     }
 }
 
+.question-card {
+        @extend .question-info-card;
+    width: 100%;
+}
+
 .question-info-list {
     display: flex;
     flex-wrap: wrap;
@@ -52,6 +57,11 @@
   }
 
   .question-info-card {
+      flex: 1;
+      min-width: 15em;
+  }
+
+  .question-card {
       flex: 1;
       min-width: 15em;
   }
