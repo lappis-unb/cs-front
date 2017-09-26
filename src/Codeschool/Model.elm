@@ -82,7 +82,7 @@ type Route
     | Learn
     | Help
     | QuestionList
-    | QuestionCode Id
+    | QuestionCode Slug
     | QuestionType Id
     | Social
     | Profile
