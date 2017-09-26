@@ -10,3 +10,4 @@ dist
 elm-stuff
 public/bower_components
 src/scss/.sass-cache/
+**.DS_STORE
