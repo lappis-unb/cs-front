@@ -117,7 +117,7 @@ checkLogin model =
                   , option [ value "Female" ] [ text "Female" ]
                   , option [ value "Others" ] [ text "Others" ]
                   ]
-              , regProfile model model.userError.alias_
+              , regProfile model model.userError.profile.phone
                   ( "Phone"
                   , "text"
                   , "phone"
@@ -129,7 +129,7 @@ checkLogin model =
                   , input [ pattern "([0]?[1-9]|[12][0-9]|3[01])", maxlength 2, placeholder "Day", class "date-item", onInput (Msg.UpdateDate "day") ] []
                   , input [ pattern "^(19|20)[0-9]{2}$", maxlength 4, placeholder "Year", class "date-item", onInput (Msg.UpdateDate "year") ] []
                   ]
-              , regProfile model model.userError.alias_
+              , regProfile model model.userError.profile.website
                   ( "website"
                   , "text"
                   , "website"

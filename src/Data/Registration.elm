@@ -149,14 +149,20 @@ type alias UserError =
     { name : List String
     , alias_ : List String -- needed
     , email : List String -- needed
-    , email_confirmation : List String -- needed
     , password : List String -- needed
     , password_confirmation : List String -- needed
     , school_id: List String -- needed
-    , gender: List String
-    , birthday: List String
-    , about_me: List String
+    , profile: ProfileFormError
     }
+
+type alias ProfileFormError =
+      { gender: List String
+      , phone : List String
+      , date_of_birth: List String
+      , website: List String
+      , about_me: List String
+      }
+
 
 -- empty users errors initialization
 emptyUserError : UserError
@@ -164,14 +170,22 @@ emptyUserError =
     { name = []
     , alias_ = []
     , email = []
-    , email_confirmation = []
     , password = []
     , password_confirmation = []
     , school_id = []
-    , gender = []
-    , birthday = []
-    , about_me = []
+    , profile = emptyProfileError
     }
+
+-- Profile register initialization
+emptyProfileError : ProfileFormError
+emptyProfileError =
+  { gender =  []
+  , phone = []
+  , date_of_birth = []
+  , website = []
+  , about_me = []
+  }
+
 
 -- user errors decoders
 userErrorDecoder : Dec.Decoder UserError
@@ -180,10 +194,16 @@ userErrorDecoder =
       |> optional "name" (Dec.list Dec.string) []
       |> optional "alias" (Dec.list Dec.string) []
       |> optional "email" (Dec.list Dec.string) []
-      |> optional "email_confirmation" (Dec.list Dec.string) []
       |> optional "password" (Dec.list Dec.string) []
       |> optional "password_confirmation" (Dec.list Dec.string) []
       |> optional "school_id" (Dec.list Dec.string) []
+      |> optional "profile" (profileErrorDecoder) emptyProfileError
+
+profileErrorDecoder : Dec.Decoder ProfileFormError
+profileErrorDecoder =
+    decode ProfileFormError
       |> optional "gender" (Dec.list Dec.string) []
-      |> optional "birthday" (Dec.list Dec.string) []
+      |> optional "phone" (Dec.list Dec.string) []
+      |> optional "date_of_birth" (Dec.list Dec.string) []
+      |> optional "website" (Dec.list Dec.string) []
       |> optional "about_me" (Dec.list Dec.string) []
