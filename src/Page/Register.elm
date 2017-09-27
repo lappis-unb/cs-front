@@ -7,6 +7,8 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (on, onClick, onInput, onSubmit)
 import Json.Decode as Json
 import Ui.Parts exposing (promoSimple, promoTable, simpleHero)
+import Char
+import Data.Registration exposing (..)
 
 
 mapErrorsToLi : List String -> List (Html msg)
@@ -139,6 +141,8 @@ checkLogin model =
               , div [ class "item-form" ]
                   [ textarea [ maxlength 500, placeholder "About me", onInput (Msg.UpdateProfileRegister "about_me") ] []
                   ]
+              , p [ class (checkGeneralErrors model "icon") ] [ text (String.fromChar (Char.fromCode 9888)) ]
+              , p [ class (checkGeneralErrors model "warning") ] [ text "Existem problemas no seu registro!"]
               , button [ class "submit-button", onClick Msg.DispatchUserRegistration ] [ text "Submit" ]
               ]
           ]
@@ -149,6 +153,24 @@ checkLogin model =
             [div [class "loggedin-text"] [ text "You are already logged in!" ]]
             -- style loggedin reused from _login.scss
           ]
+
+
+checkGeneralErrors model type_ =
+    case type_ of
+      "icon" ->
+          if model.userError == emptyUserError then
+            "icon-no-errors"
+          else
+            "icon-errors"
+      "warning" ->
+          if model.userError == emptyUserError then
+            "icon-no-errors"
+          else
+            "warning-errors"
+
+      _ ->
+        "icon-no-errors"
+
 
 view : Model -> Html Msg
 view model =
