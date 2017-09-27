@@ -13,13 +13,22 @@ mapErrorsToLi : List String -> List (Html msg)
 mapErrorsToLi errors =
     List.map (\err -> li [] [ text err ]) errors
 
+defineErrorStyle : Bool -> String
+defineErrorStyle notHasError =
+  if notHasError then
+    "item-no-errors"
+  else
+    "item-errors"
+
 
 regFormField : Model -> List String -> (String, String, String, String, String) -> Html Msg
 regFormField model fieldErrors attributes =
     let
         (placeholderText, fieldType, modelValue, regex, errorMessage) = attributes
+        checkErrors = List.isEmpty (mapErrorsToLi fieldErrors)
     in
-        div [ class "item-form" ]
+      div [ class "main-container" ]
+        [ div [ class "item-form", class (defineErrorStyle checkErrors)]
             [ input
                 [ pattern regex
                 , placeholder placeholderText
@@ -27,15 +36,18 @@ regFormField model fieldErrors attributes =
                 , onInput (Msg.UpdateUserRegister modelValue)
                 , title errorMessage
                 ] []
-            , ul [] (mapErrorsToLi fieldErrors)
             ]
+        , ul [] (mapErrorsToLi fieldErrors)
+        ]
 
 regProfile : Model -> List String -> (String, String, String, String, String) -> Html Msg
 regProfile model fieldErrors attributes =
     let
         (placeholderText, fieldType, modelValue, regex, errorMessage) = attributes
+        checkErrors = List.isEmpty (mapErrorsToLi fieldErrors)
     in
-        div [ class "item-form" ]
+      div [ class "main-container" ]
+        [ div [ class "item-form", class (defineErrorStyle checkErrors) ]
             [ input
                 [ pattern regex
                 , placeholder placeholderText
@@ -43,9 +55,9 @@ regProfile model fieldErrors attributes =
                 , onInput (Msg.UpdateProfileRegister modelValue)
                 , title errorMessage
                 ] []
-            , ul [] (mapErrorsToLi fieldErrors)
             ]
-
+        , ul [] (mapErrorsToLi fieldErrors)
+        ]
 
 checkLogin : Model -> Html Msg
 checkLogin model =
@@ -76,14 +88,14 @@ checkLogin model =
                   , "^[A-Za-z0-9_.]{3,20}$"
                   , "Por favor insira um usuário de 3 a 20 caracteres alfanuméricos. Somente _ e . são permitidos."
                   )
-              , div [ class "item-form" ]
+              , div [ class "item-form", class (defineErrorStyle (List.isEmpty (mapErrorsToLi model.userError.email))) ]
                   [ input
                       [ placeholder "E-mail"
                       , type_ "email"
                       , onInput (Msg.UpdateUserRegister "email")
                       ] []
-                  , ul [] (mapErrorsToLi model.userError.email)
                   ]
+              , ul [] (mapErrorsToLi model.userError.email)
               , regFormField model model.userError.password
                   ( "Password"
                   , "password"

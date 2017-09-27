@@ -12,6 +12,15 @@
     margin: 10px;
 }
 
+.item-no-errors {
+  border: none;
+}
+
+.item-errors {
+  border: 1px solid #dd4b39;
+  border-radius: 5px;
+}
+
 
 .select-item {
   width: 300px;
