@@ -16,9 +16,9 @@ type alias Date =
 
 testDate : Date
 testDate =
-    { month = "January"
-    , day = "22"
-    , year = "1996"
+    { month = ""
+    , day = ""
+    , year = ""
     }
 
 dateDecoder : Dec.Decoder Date

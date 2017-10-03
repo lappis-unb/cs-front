@@ -1,23 +1,13 @@
-module Page.Questions.Base exposing (clsList, viewDetail, viewList)
+module Page.Questions.QuestionList exposing (clsList, viewList)
 
--- import Codeschool.Msg exposing (..)
--- import Data.User exposing (User)
-
-import Codeschool.Model exposing (Model)
 import Data.Question exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Ui.Generic exposing (container, date, emoticon)
 import Ui.Parts exposing (promoSimple, promoTable, simpleHero)
 
-
--- import Html.Events exposing (..)
-
-
-viewDetail : Model -> Html msg
-viewDetail m =
-    div [] [ text "#teste" ]
-
+questions_type = "Basic questions"
+questions_type_description = "Easy Easy Maaann, mostly basic questions"
 
 viewList : List QuestionInfo -> Html msg
 viewList m =
@@ -49,19 +39,19 @@ viewList m =
                     fab_ :: listing
     in
     div []
-        [ simpleHero "List of Questions" "See all questions available for you" "simple-hero__page-blue"
+        [ simpleHero questions_type questions_type_description "simple-hero__page-blue"
         , div [] children
         ]
 
 
 questionInfo : QuestionInfo -> Html msg
 questionInfo cls =
-    div [ class "question-info-card" ]
+    div [ class "question-card" ]
         [ Ui.Generic.icon [ class "question-info-card__icon" ] cls.icon
-        , h1 [ class "question-info-card__title" ]
+        , h1 [ class "question-card__title" ]
             [ text cls.questionName
             ]
-        , p [ class "question-info-card__description" ]
+        , p [ class "question-card__description" ]
             [ text cls.shortDescription
             ]
         ]
@@ -69,33 +59,31 @@ questionInfo cls =
 
 questionOne : QuestionInfo
 questionOne =
-    { questionName = "VEMMM MALUCOOOOO"
-    , shortDescription = "DESCREVE INSANOOOOOOOOOOOOOO."
-    , icon = "code"
+    { questionName = "Questão mais facil"
+    , shortDescription = "Questão mais facil, se n conseguir fazer vaza."
+    , icon = "sentiment_very_satisfied"
     }
 
 
 questionTwo : QuestionInfo
 questionTwo =
-    { questionName = "nome da questão pois é"
-    , shortDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius tellus velit, ut accumsan odio tincidunt in."
-    , icon = "sentiment_very_satisfied"
+    { questionName = "Segunda mais facil"
+    , shortDescription = "Questão facil também."
+    , icon = "code"
     }
-
 
 questionThree : QuestionInfo
 questionThree =
-    { questionName = "Sequência de Fibonacci"
-    , shortDescription = "Questão para testar seus conhecimentos sobre como funciona o algoritmo de fibonacci"
-    , icon = "all_out"
+    { questionName = "Questão dificil"
+    , shortDescription = "Essa é hard"
+    , icon = "loop"
     }
-
 
 questionFour : QuestionInfo
 questionFour =
-    { questionName = "Sequência de Fibonacci"
-    , shortDescription = "Questão para testar seus conhecimentos sobre como funciona o algoritmo de fibonacci"
-    , icon = "all_out"
+    { questionName = "Questão dificil"
+    , shortDescription = "Essa é hard"
+    , icon = "loop"
     }
 
 

@@ -12,12 +12,15 @@ import Page.Learn
 import Page.NotFound
 import Page.Profile
 import Page.Progress
-import Page.Questions.Base
+import Page.Questions.QuestionRoot
+import Page.Questions.QuestionList
+import Page.Questions.Code
 import Page.ScoreBoard
 import Page.Social
 import Page.Submission
 import Page.Actions
 import Page.Register
+import Page.Login
 import Ui.Layout
 
 
@@ -42,17 +45,20 @@ getRouteView model =
         Logout ->
             Page.Index.view model
 
-        Profile id ->
+        Profile ->
             Page.Profile.view model
 
         Progress ->
             Page.Progress.view model
 
-        QuestionList ->
-            Page.Questions.Base.viewList Page.Questions.Base.clsList
+        QuestionList string ->
+            Page.Questions.QuestionList.viewList Page.Questions.QuestionList.clsList
 
-        Question id ->
-            Page.Questions.Base.viewDetail model
+        Question string slug ->
+            Page.Questions.Code.view model
+
+        QuestionRoot ->
+            Page.Questions.QuestionRoot.viewList Page.Questions.QuestionRoot.clsList
 
         ScoreBoard ->
             Page.ScoreBoard.view model
@@ -71,6 +77,9 @@ getRouteView model =
 
         Register ->
             Page.Register.view model
+
+        Login ->
+            Page.Login.view model
 
 
 view : Html Msg -> Model -> Html Msg

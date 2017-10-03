@@ -6,11 +6,13 @@ module Codeschool.Msg exposing (..)
 import Codeschool.Model exposing (Model, Route)
 import Codeschool.Routing exposing (parseLocation, reverse)
 import Data.Date exposing (..)
-import Data.User exposing (User, UserError, toJson, userDecoder, userErrorDecoder)
+import Data.User exposing (..)
+import Data.Registration exposing (..)
+import Data.Login exposing (..)
 import Http exposing (..)
 import Json.Decode exposing (string)
-import Json.Decode.Pipeline exposing (decode, required)
 import Navigation exposing (Location, back, newUrl)
+
 
 {-| Message type
 -}
@@ -20,11 +22,21 @@ type Msg
     | RequireAsset String
     | AssetLoaded String
     | GoBack Int
+    -- Dispatchs
     | DispatchUserRegistration
-    | UpdateRegister String String
-    | RequestReceiver (Result Http.Error User)
+    | DispatchLogin
+    -- Responses
+    | GetRegistrationResponse (Result Http.Error ExpectRegisterResponse)
+    | GetProfileResponse (Result Http.Error ProfileForm)
+    | GetLoginResponse (Result Http.Error Auth)
+    | LoginAfterRegistration
+    | ContinueRegistration
+    -- Form handling
+    | UpdateUserRegister String String
+    | UpdateProfileRegister String String
     | UpdateDate String String
-    | UpdateUserDate
+    | UpdateLogin String String
+    | LogOut
 
 {-| Update function
 -}
@@ -50,56 +62,115 @@ update msg model =
         GoBack int->
          (model, back int)
 
+-- Dispatchs
         DispatchUserRegistration ->
-
           let
-              data = sendRegData model.user
-
+            data = sendRegistrationData model.userRegister
           in
-        --    Debug.log (toString data)
             (model, data)
 
-        UpdateRegister inputModel inputValue ->
-            let
-                newUser = formReceiver model.user inputModel inputValue
-            in
-                ({model | user = newUser}, Cmd.none)
+        DispatchLogin ->
+          let
+            data = sendLoginData model.userLogin
+          in
+            (model, data)
 
-        UpdateUserDate ->
+-- OK Responses
+        GetLoginResponse (Ok data) ->
+          Debug.log("Logado com sucesso")
+            { model | auth = {user = data.user, token = data.token}, isLogged = True} ! []
+            |> andThen (ChangeRoute Codeschool.Model.Index)
+
+        -- Handle successful userRegister registration
+        GetRegistrationResponse (Ok register) ->
+          let
+            login = { email = model.userRegister.email, password = model.userRegister.password }
+          in
+            Debug.log "OK OK Registration"
+            Debug.log(toString register)
+            ({model | expectRegister = register, userLogin = login}, Cmd.none)
+            |> andThen LoginAfterRegistration
+
+        GetProfileResponse (Ok data) ->
+          Debug.log "OK OK Profile"
+          Debug.log(toString model.expectRegister.profile.user)
+          (model, Cmd.none)
+
+        LoginAfterRegistration ->
+          let
+            data = sendLoginData model.userLogin
+          in
+            Debug.log("Logando após cadastro")
+            Debug.log(toString data)
+            (model, data)
+            |> andThen ContinueRegistration
+
+        ContinueRegistration ->
+          let
+              test= (sendProfileData model)
+          in
+            Debug.log("Continuando Registro")
+            (model, test)
+
+-- Errors Responses
+        GetLoginResponse (Result.Err _) ->
+          Debug.log("Erro Geral GetLogin")
+          (model, Cmd.none)
+
+        -- Handle API error validations by parsing
+        -- the json response and updating the UserError model
+        GetRegistrationResponse (Err (BadStatus response)) ->
+         let
+             newErrors = userErrorUpdate model.userError response.body
+         in
+            Debug.log "Bad Status!"
+            ({model | userError = newErrors}, Cmd.none)
+
+        GetRegistrationResponse (Err (BadPayload string (response))) ->
+          Debug.log ("Response:" ++ toString response)
+          Debug.log ("Tem mais:" ++ toString string)
+          (model, Cmd.none)
+
+        -- Handle others API errors, Ex: connection timeout
+        GetRegistrationResponse (Err _) ->
+          Debug.log "Erro Geral GetRegistration"
+          (model, Cmd.none)
+
+        GetProfileResponse (Err _) ->
+          Debug.log("Erro Geral GetProfile")
+          (model, Cmd.none)
+
+
+-- Form handling
+        UpdateUserRegister inputModel inputValue ->
             let
-                newUser = dateUserUpdate model.user model.date
+                newUser = formReceiver model.userRegister inputModel inputValue
             in
-                ({model | user = newUser}, Cmd.none)
+                ({model | userRegister = newUser}, Cmd.none)
+
+        UpdateProfileRegister inputModel inputValue ->
+            let
+              newProfile = profileReceiver model.profileRegister inputModel inputValue
+            in
+              ({model | profileRegister = newProfile}, Cmd.none)
+
+        UpdateLogin inputModel inputValue ->
+            let
+                newLogin = loginReceiver model.userLogin inputModel inputValue
+            in
+                ({model | userLogin = newLogin}, Cmd.none)
 
         UpdateDate field value ->
             let
               newDate = dateReceiver model.date field value
-              newModel = {model | date = newDate}
+              newProfile = dateUserUpdate model.profileRegister newDate
+              newModel = {model | date = newDate, profileRegister = newProfile}
             in
-              update UpdateUserDate newModel
+               newModel ! []
 
-
-        -- Handle successful user registration
-        RequestReceiver (Ok user) ->
-          Debug.log "OK OK"
-          Debug.log(toString user)
-          (model, Cmd.none)
-
-
-        -- Handle API error validations by parsing
-        -- the json response and updating the UserError model
-        RequestReceiver (Err (BadStatus response)) ->
-         let
-             newErrors = userErrorUpdate model.userError response.body
-         in
-            Debug.log "#DeuRuim validacao"
-            ({model | userError = newErrors}, Cmd.none)
-
-
-        -- Handle others API errors, Ex: connection timeout
-        RequestReceiver (Err _) ->
-          Debug.log "#DeuRuim de vez"
-          (model, Cmd.none)
+        LogOut ->
+            {model | auth = emptyAuth, isLogged = False } ! []
+            |> andThen (ChangeRoute Codeschool.Model.Index)
 
 
 
@@ -127,9 +198,9 @@ withElement el lst =
         el :: lst
 
 
-dateUserUpdate : User -> Date -> User
-dateUserUpdate user date =
-  {user | birthday = date.month ++ "-" ++ date.day ++ "-" ++ date.year}
+dateUserUpdate : ProfileForm -> Date -> ProfileForm
+dateUserUpdate profile date =
+  {profile | date_of_birth = date.year ++ "-" ++ date.month ++ "-" ++ date.day}
 
 
 dateReceiver : Date -> String -> String -> Date
@@ -145,52 +216,115 @@ dateReceiver date field value =
           date
 
 
-formReceiver : User -> String -> String -> User
-formReceiver user inputModel inputValue =
+loginReceiver : UserLogin -> String -> String -> UserLogin
+loginReceiver userLogin inputModel inputValue =
   case inputModel of
-    "name" ->
-        {user | name = inputValue}
-
-    "alias_" ->
-        {user | alias_ = inputValue}
-
     "email" ->
-        {user | email = inputValue}
-
-    "email_confirmation" ->
-        {user | email_confirmation = inputValue}
+        { userLogin | email = inputValue }
 
     "password" ->
-        {user | password = inputValue}
-
-    "password_confirmation" ->
-        {user | password_confirmation = inputValue}
-
-    "school_id" ->
-        {user | school_id = inputValue}
-
-    "gender" ->
-        {user | gender = inputValue}
-
-    "about_me" ->
-        {user | about_me = inputValue}
+        { userLogin | password = inputValue}
 
     _ ->
-        user
+       userLogin
+
+formReceiver : UserForm -> String -> String -> UserForm
+formReceiver userRegister inputModel inputValue =
+  case inputModel of
+    "name" ->
+        {userRegister | name = inputValue}
+
+    "alias_" ->
+        {userRegister | alias_ = inputValue}
+
+    "email" ->
+        {userRegister | email = inputValue}
+
+    "password" ->
+        {userRegister | password = inputValue}
+
+    "password_confirmation" ->
+        {userRegister | password_confirmation = inputValue}
+
+    "school_id" ->
+        {userRegister | school_id = inputValue}
+
+    _ ->
+        userRegister
+
+profileReceiver : ProfileForm -> String -> String -> ProfileForm
+profileReceiver profileRegister inputModel inputValue =
+  case inputModel of
+    "gender" ->
+      {profileRegister | gender = inputValue}
+    "phone" ->
+      {profileRegister | phone = inputValue}
+    "date_of_birth" ->
+      {profileRegister | date_of_birth = inputValue}
+    "website" ->
+      {profileRegister | website = inputValue}
+    "about_me" ->
+      {profileRegister | about_me = inputValue}
+    _ ->
+      profileRegister
 
 
-sendRegData : User -> Cmd Msg
-sendRegData user =
+
+sendLoginData : UserLogin -> Cmd Msg
+sendLoginData userRegister =
     let
-        userRegRequest =
+        userLoginRequest =
             Http.request
-                { body = Data.User.toJson user |> Http.jsonBody
-                , expect = Http.expectJson userDecoder
+                { body = Data.Login.toJsonLogin userRegister |> Http.jsonBody
+                , expect = Http.expectJson authDecoder
                 , headers = []
                 , method = "POST"
                 , timeout = Nothing
-                , url = "http://localhost:3000/users"
+                , url = "http://localhost:8000/api-token-auth/"
                 , withCredentials = False
                 }
     in
-        userRegRequest |> Http.send RequestReceiver
+        userLoginRequest |> Http.send GetLoginResponse
+
+
+sendRegistrationData : UserForm -> Cmd Msg
+sendRegistrationData userRegister =
+    let
+        userRegRequest =
+            Http.request
+                { body = Data.Registration.toJson userRegister |> Http.jsonBody
+                , expect = Http.expectJson expectRegisterDecoder
+                , headers = []
+                , method = "POST"
+                , timeout = Nothing
+                , url = "http://localhost:8000/api/users/"
+                , withCredentials = False
+                }
+    in
+        userRegRequest |> Http.send GetRegistrationResponse
+
+sendProfileData : Model -> Cmd Msg
+sendProfileData model =
+    let
+        profileUpdateRequest =
+            Http.request
+                { body = Data.Registration.toJsonSendProfile model.profileRegister |> Http.jsonBody
+                , expect = Http.expectJson profileDecoder
+                , headers = [Http.header "Token" ("JWT " ++ model.auth.token)]
+                , method = "PUT"
+                , timeout = Nothing
+                , url = "http://localhost:8000/api/profile/" ++ (toString model.expectRegister.profile.user)
+                , withCredentials = False
+                }
+    in
+        Debug.log("aqui????????" ++ "Token:" ++ model.auth.token )
+        profileUpdateRequest |> Http.send GetProfileResponse
+
+
+andThen : Msg -> ( Model, Cmd Msg ) -> ( Model, Cmd Msg )
+andThen msg ( model, cmd ) =
+    let
+        ( newmodel, newcmd ) =
+            update msg model
+    in
+        newmodel ! [ cmd, newcmd ]

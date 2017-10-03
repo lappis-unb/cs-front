@@ -16,13 +16,15 @@ matchers =
         , map Progress (s "progress")
         , map Learn (s "learn")
         , map Help (s "help")
-        , map Question (s "questions" </> int)
-        , map QuestionList (s "questions")
+        , map QuestionRoot (s "questions")
+        , map QuestionList (s "questions" </> string)
+        , map Question (s "questions" </> string </> string)
         , map Social (s "social")
-        , map Profile (s "profile" </> int)
+        , map Profile (s "profile")
         , map Logout (s "logout")
         , map Actions (s "actions")
         , map Register (s "register")
+        , map Login (s "login")
         ]
 
 
@@ -67,17 +69,20 @@ baseReverse route =
         Help ->
             "help/"
 
-        Question id ->
-            "questions/" ++ toString id
-
-        QuestionList ->
+        QuestionRoot ->
             "questions/"
+
+        QuestionList st ->
+            "questions/" ++ st
+
+        Question a b ->
+            "code/" ++ a ++ "/" ++ b
 
         Social ->
             "social"
 
-        Profile id ->
-            "profile/" ++ toString id
+        Profile ->
+            "profile/"
 
         Logout ->
             "logout/"
@@ -90,6 +95,9 @@ baseReverse route =
 
         Register ->
             "register/"
+
+        Login ->
+            "login/"
 
 
 {-| Reverse URL prepending the "#" symbol

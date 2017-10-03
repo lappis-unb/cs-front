@@ -5,14 +5,25 @@ module Ui.Header exposing (..)
 
 import Codeschool.Model exposing (..)
 import Codeschool.Msg as Msg exposing (..)
+import Color exposing (black, blue)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Material.Icons.Action
+import Material.Icons.Navigation exposing (more_horiz)
 import Ui.Generic exposing (icon, zindex)
 
 
 {-| View header component.
 -}
+checkLogin : Model -> Html Msg
+checkLogin model =
+  case model.isLogged of
+    False ->
+      div [] []
+    True ->
+      span [ (onClick LogOut) ] [ text "Logout" ]
+
 header : Model -> Html Msg
 header model =
     let
@@ -27,31 +38,18 @@ header model =
         slot =
             attribute "slot"
 
-        --button =
-        --    span [ class "page-header__user-menu" ] [ icon [] "person" ]
-
         userMenu =
-            div
-                [ class "page-header__user-menu"
-                , attribute "horizontal-align" "right"
-                , attribute "horizontal-offset" "-0"
-                , attribute "vertical-offset" "80"
-                ]
-                [ span
-                    [ slot "dropdown-trigger"
-                    , class "page-header__user-menu-button"
-                    , attribute "mini" "mini"
-                    , attribute "label" " ツ "
+                div [class "dropdown"]
+                    [ Material.Icons.Navigation.menu black 32
+                    , div [class "dropdown-content"]
+                          [ div [class "page-header__user-menu-icon"] [ Material.Icons.Action.perm_identity black 32 ]
+                          , div [ class "page-header__user-menu-title" ] [ h1 [] [ text "Actions" ] ]
+                          , span [ onClick (ChangeRoute (Register)) ] [ text "Register" ]
+                          , span [ onClick (ChangeRoute (Profile)) ] [ text "Profile" ]
+                          , checkLogin model
+                          ]
                     ]
-                    []
-                , div [ slot "dropdown-content", class "page-header__user-menu-content" ]
-                    [ div [ class "page-header__user-menu-icon" ] [ icon [] "person" ]
-                    , div [ class "page-header__user-menu-title" ] [ h1 [] [ text "Actions" ] ]
-                    , span [ onClick (ChangeRoute (Register)) ] [ text "Register" ]
-                    , span [ onClick (ChangeRoute (Profile model.user.id)) ] [ text "Profile" ]
-                    , span [ href "/logout/" ] [ text "Logout" ]
-                    ]
-                ]
+
 
         fabOnClick =
           if model.route == Actions then
@@ -61,21 +59,28 @@ header model =
 
 
         mobileMenu =
-            div
-                [ class "page-header__user-menu"
-                , attribute "horizontal-align" "right"
-                , attribute "horizontal-offset" "-0"
-                , attribute "vertical-offset" "80"
-                ]
-                [ span
-                    [ slot "dropdown-trigger"
-                    , class "mobile-button"
-                    , attribute "mini" "mini"
-                    , attribute "label" " ツ "
-                    , fabOnClick
+                div [ fabOnClick, class "mobile-button"]
+                    [ Material.Icons.Navigation.menu black 32
+                    , div [  ]
+                          []
                     ]
-                    []
-                ]
+
+
+            -- div
+            --     [ class "page-header__user-menu"
+            --     , attribute "horizontal-align" "right"
+            --     , attribute "horizontal-offset" "-0"
+            --     , attribute "vertical-offset" "80"
+            --     ]
+            --     [ span
+            --         [ slot "dropdown-trigger"
+            --         , class "mobile-button"
+            --         , attribute "mini" "mini"
+            --         , attribute "label" " ツ "
+            --         , fabOnClick
+            --         ]
+            --         []
+            --     ]
 
         header =
             div
@@ -90,7 +95,7 @@ header model =
                         []
                     ]
                 , link ClassroomList "Classrooms"
-                , link QuestionList "Questions"
+                , link QuestionRoot "Questions"
                 , link Social "Social"
                 , div [class "page-header__special-buttons"]
                   [
