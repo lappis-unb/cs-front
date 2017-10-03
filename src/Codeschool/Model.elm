@@ -81,9 +81,9 @@ type Route
     | Progress
     | Learn
     | Help
-    | QuestionList
-    | QuestionCode Slug
-    | QuestionType 
+    | QuestionRoot
+    | QuestionList Slug
+    | Question Slug Slug
     | Social
     | Profile
     | Logout
