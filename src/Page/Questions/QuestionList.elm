@@ -1,4 +1,4 @@
-module Page.Questions.BasicQuestion exposing (clsList, viewList)
+module Page.Questions.QuestionList exposing (clsList, viewList)
 
 import Codeschool.Model exposing (Model)
 import Data.Question exposing (..)

@@ -12,8 +12,8 @@ import Page.Learn
 import Page.NotFound
 import Page.Profile
 import Page.Progress
-import Page.Questions.Base
-import Page.Questions.BasicQuestion
+import Page.Questions.QuestionRoot
+import Page.Questions.QuestionList
 import Page.Questions.Code
 import Page.ScoreBoard
 import Page.Social
@@ -52,13 +52,13 @@ getRouteView model =
             Page.Progress.view model
 
         QuestionList ->
-            Page.Questions.BasicQuestion.viewList Page.Questions.BasicQuestion.clsList
+            Page.Questions.QuestionList.viewList Page.Questions.QuestionList.clsList
 
         QuestionCode id ->
             Page.Questions.Code.view model
 
         QuestionType ->
-            Page.Questions.Base.viewList Page.Questions.Base.clsList
+            Page.Questions.QuestionRoot.viewList Page.Questions.QuestionRoot.clsList
 
         ScoreBoard ->
             Page.ScoreBoard.view model

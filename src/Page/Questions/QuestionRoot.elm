@@ -1,4 +1,4 @@
-module Page.Questions.Base exposing (clsList, viewDetail, viewList)
+module Page.Questions.QuestionRoot exposing (clsList, viewDetail, viewList)
 
 -- import Codeschool.Msg exposing (..)
 -- import Data.User exposing (User)
