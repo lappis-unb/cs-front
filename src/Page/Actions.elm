@@ -22,7 +22,7 @@ view model =
          div [ attribute "slot" "dropdown-content", class "page-header__user-menu-content" ]
         [ h1 [class "mobile-button__fonts-title"] [ text "Actions" ]
         , span [ onClick (ChangeRoute (ClassroomList)), class "mobile-button__item" ] [ h1 [class "mobile-button__fonts"] [text "Classrooms"] ]
-        , span [ onClick (ChangeRoute (QuestionList)), class "mobile-button__item" ] [ h1 [class "mobile-button__fonts"] [text "Questions"] ]
+        , span [ onClick (ChangeRoute (QuestionType)), class "mobile-button__item" ] [ h1 [class "mobile-button__fonts"] [text "Questions"] ]
         , span [ onClick (ChangeRoute (Social)), class "mobile-button__item" ] [ h1 [class "mobile-button__fonts"] [text "Social"] ]
         , span [ onClick (ChangeRoute (Profile)), class "mobile-button__item" ] [ h1 [class "mobile-button__fonts"] [text "Profile"] ]
         , checkLogin model

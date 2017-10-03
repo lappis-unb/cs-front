@@ -95,7 +95,7 @@ header model =
                         []
                     ]
                 , link ClassroomList "Classrooms"
-                , link QuestionList "Questions"
+                , link QuestionType "Questions"
                 , link Social "Social"
                 , div [class "page-header__special-buttons"]
                   [

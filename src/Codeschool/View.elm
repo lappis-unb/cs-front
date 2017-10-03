@@ -57,8 +57,8 @@ getRouteView model =
         QuestionCode id ->
             Page.Questions.Code.view model
 
-        QuestionType id ->
-            Page.Questions.Base.viewDetail model
+        QuestionType ->
+            Page.Questions.Base.viewList Page.Questions.Base.clsList
 
         ScoreBoard ->
             Page.ScoreBoard.view model

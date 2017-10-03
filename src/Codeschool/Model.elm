@@ -83,7 +83,7 @@ type Route
     | Help
     | QuestionList
     | QuestionCode Slug
-    | QuestionType Id
+    | QuestionType 
     | Social
     | Profile
     | Logout
