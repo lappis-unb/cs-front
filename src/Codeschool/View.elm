@@ -51,13 +51,13 @@ getRouteView model =
         Progress ->
             Page.Progress.view model
 
-        QuestionList ->
+        QuestionList string ->
             Page.Questions.QuestionList.viewList Page.Questions.QuestionList.clsList
 
         Question string slug ->
             Page.Questions.Code.view model
 
-        QuestionType ->
+        QuestionRoot ->
             Page.Questions.QuestionRoot.viewList Page.Questions.QuestionRoot.clsList
 
         ScoreBoard ->

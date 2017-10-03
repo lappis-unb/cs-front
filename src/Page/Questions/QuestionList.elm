@@ -1,6 +1,5 @@
 module Page.Questions.QuestionList exposing (clsList, viewList)
 
-import Codeschool.Model exposing (Model)
 import Data.Question exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
