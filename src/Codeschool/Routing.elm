@@ -16,9 +16,9 @@ matchers =
         , map Progress (s "progress")
         , map Learn (s "learn")
         , map Help (s "help")
-        , map QuestionType (s "questionsType")
-        , map QuestionList (s "questionsList")
-        , map QuestionCode (s "code" </> string)
+        , map QuestionRoot (s "questions")
+        , map QuestionList (s "questions" </> string)
+        , map Question (s "questions" </> string </> string)
         , map Social (s "social")
         , map Profile (s "profile")
         , map Logout (s "logout")
@@ -69,14 +69,14 @@ baseReverse route =
         Help ->
             "help/"
 
-        QuestionType ->
-            "questionsType/" 
+        QuestionRoot ->
+            "questions/"
 
-        QuestionList ->
-            "questionsList/"
+        QuestionList st ->
+            "questions/" ++ st
 
-        QuestionCode st ->
-            "code/" ++ st
+        Question a b ->
+            "code/" ++ a ++ "/" ++ b
 
         Social ->
             "social"
