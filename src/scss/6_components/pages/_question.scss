@@ -42,13 +42,14 @@
 
 .question-card {
         @extend .question-info-card;
-    width: 100%;
+    width: 40% !important;
 }
 
 .question-info-list {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    text-align: center;
 }
 
 @media (max-width: $breakpoint-large-screen) {
@@ -73,21 +74,21 @@
       align-items: center;
       flex-direction: column;
       width: 75%;
-      margin: 0px auto;
+      margin: 3%;
       margin-top: 25px;
 }
 .select-language {
   width: 300px;
   margin-top: 50px;
   margin-bottom: 10px;
-  margin-left: 10%;
+  margin-left: 3%;
 }
 .item-question {
     width: 90%;
     height: 30vw;
     margin: 0 auto;
     margin-right: 5%;
-    margin-left: 5%;
+    margin-left: 1.6%;
 }
 
 .send-button {
@@ -99,6 +100,6 @@
     border-radius: 5px;
     width: 20%;
     margin-right: 5%;
-    margin-left: 70%;
+    margin-left: 64.2%;
 
 }

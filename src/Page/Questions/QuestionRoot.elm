@@ -49,7 +49,7 @@ viewList m =
                     fab_ :: listing
     in
     div []
-        [ simpleHero "Type of Questions" "See all questions available for you" "simple-hero__page-blue"
+        [ simpleHero "Category of Questions" "See all questions available for you" "simple-hero__page-blue"
         , div [] children
         ]
 

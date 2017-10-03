@@ -79,7 +79,14 @@ questionThree =
     , icon = "loop"
     }
 
+questionFour : QuestionInfo
+questionFour =
+    { questionName = "Questão dificil"
+    , shortDescription = "Essa é hard"
+    , icon = "loop"
+    }
+
 
 clsList : List QuestionInfo
 clsList =
-    [ questionOne, questionTwo, questionThree ]
+    [ questionOne, questionTwo, questionThree, questionFour ]
