@@ -19,12 +19,12 @@ type alias UserForm =
 -- User register initialization
 emptyUserRegister : UserForm
 emptyUserRegister =
-    { name = "Anonymous"
-    , alias_ = "unknown"
-    , email = "none@gmail.com"
-    , password = "123456"
-    , password_confirmation = "123456"
-    , school_id = "15/0344750"
+    { name = ""
+    , alias_ = ""
+    , email = ""
+    , password = ""
+    , password_confirmation = ""
+    , school_id = ""
     , profile = emptyProfile
     }
 

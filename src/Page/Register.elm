@@ -105,13 +105,6 @@ checkLogin model =
                   , "^[\\S]{6,30}$"
                   , "Sua senha deve conter no mínimo 6 caracteres alfanuméricos. Símbolos permitidos."
                   )
-              , regFormField model model.userError.password_confirmation
-                  ( "Repeat Password"
-                  , "password"
-                  , "password_confirmation"
-                  , "^[\\S]{6,30}$"
-                  , "Confirme sua senha"
-                  )
               , h1 [ class "form-title" ] [ text "Optional Fields" ]
               , select [ Html.Attributes.name "Gender", class "item-form", onChange (Msg.UpdateProfileRegister "gender") ]
                   [ option [ value "", disabled True, selected True, class "disabled-item" ] [ text "Gender" ]
