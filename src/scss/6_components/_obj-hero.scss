@@ -8,10 +8,14 @@
         font-family: $amatic-sc;
         font-weight: bold;
         font-size: 3.2em;
+        color: $color-dark-gray;
     }
 
-    &__description > *:nth-child(odd) {
-        color: lighten($color-primary-tint, 0.9);
+    &__description {
+        font-family: $amatic-sc;
+        font-weight: bold;
+        font-size: 1.5em;
+        color: $color-dark-gray;
     }
 
     &__page-green-sea {
