@@ -1,5 +1,5 @@
 .simple-hero {
-    background-color: $color-salmon;
+    background-color: $color-nephiritis;
     width: 100%;
     color: white;
 
@@ -14,17 +14,17 @@
         color: lighten($color-primary-tint, 0.9);
     }
 
-    &__page-red {
-        background-color: $color-salmon;
+    &__page-green-sea {
+        background-color: $color-green-sea;
         color: white;
     }
 
-    &__page-blue {
-        background-color: $color-primary-tint;
+    &__page-emerald {
+        background-color: $color-emerald;
     }
 
-    &__page-orange {
-        background-color: #ce6b14;
+    &__page-blue {
+        background-color: $color-peter-rever;
     }
 }
 // BEM: Block, Element, Modifier

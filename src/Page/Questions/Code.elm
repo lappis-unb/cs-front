@@ -18,7 +18,7 @@ import Ui.Parts exposing (promoSimple, promoTable, simpleHero)
 view : Model -> Html msg
 view m =
     div []
-        [ simpleHero "Titulo da questão" "" "simple-hero__page-blue"
+        [ simpleHero "Titulo da questão" "" "simple-hero__page-emerald"
         , div [ class "question-description" ]
             [ text
               """
