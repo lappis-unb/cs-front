@@ -7,19 +7,30 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (on, onClick, onInput, onSubmit)
 import Json.Decode as Json
 import Ui.Parts exposing (promoSimple, promoTable, simpleHero)
+import Char
+import Data.Registration exposing (..)
 
 
 mapErrorsToLi : List String -> List (Html msg)
 mapErrorsToLi errors =
     List.map (\err -> li [] [ text err ]) errors
 
+defineErrorStyle : Bool -> String
+defineErrorStyle notHasError =
+  if notHasError then
+    "item-no-errors"
+  else
+    "item-errors"
+
 
 regFormField : Model -> List String -> (String, String, String, String, String) -> Html Msg
 regFormField model fieldErrors attributes =
     let
         (placeholderText, fieldType, modelValue, regex, errorMessage) = attributes
+        checkErrors = List.isEmpty (mapErrorsToLi fieldErrors)
     in
-        div [ class "item-form" ]
+      div [ class "main-container" ]
+        [ div [ class "item-form", class (defineErrorStyle checkErrors)]
             [ input
                 [ pattern regex
                 , placeholder placeholderText
@@ -27,15 +38,18 @@ regFormField model fieldErrors attributes =
                 , onInput (Msg.UpdateUserRegister modelValue)
                 , title errorMessage
                 ] []
-            , ul [] (mapErrorsToLi fieldErrors)
             ]
+        , ul [] (mapErrorsToLi fieldErrors)
+        ]
 
 regProfile : Model -> List String -> (String, String, String, String, String) -> Html Msg
 regProfile model fieldErrors attributes =
     let
         (placeholderText, fieldType, modelValue, regex, errorMessage) = attributes
+        checkErrors = List.isEmpty (mapErrorsToLi fieldErrors)
     in
-        div [ class "item-form" ]
+      div [ class "main-container" ]
+        [ div [ class "item-form", class (defineErrorStyle checkErrors) ]
             [ input
                 [ pattern regex
                 , placeholder placeholderText
@@ -43,9 +57,9 @@ regProfile model fieldErrors attributes =
                 , onInput (Msg.UpdateProfileRegister modelValue)
                 , title errorMessage
                 ] []
-            , ul [] (mapErrorsToLi fieldErrors)
             ]
-
+        , ul [] (mapErrorsToLi fieldErrors)
+        ]
 
 checkLogin : Model -> Html Msg
 checkLogin model =
@@ -76,27 +90,20 @@ checkLogin model =
                   , "^[A-Za-z0-9_.]{3,20}$"
                   , "Por favor insira um usuário de 3 a 20 caracteres alfanuméricos. Somente _ e . são permitidos."
                   )
-              , div [ class "item-form" ]
+              , div [ class "item-form", class (defineErrorStyle (List.isEmpty (mapErrorsToLi model.userError.email))) ]
                   [ input
                       [ placeholder "E-mail"
                       , type_ "email"
                       , onInput (Msg.UpdateUserRegister "email")
                       ] []
-                  , ul [] (mapErrorsToLi model.userError.email)
                   ]
+              , ul [] (mapErrorsToLi model.userError.email)
               , regFormField model model.userError.password
                   ( "Password"
                   , "password"
                   , "password"
                   , "^[\\S]{6,30}$"
                   , "Sua senha deve conter no mínimo 6 caracteres alfanuméricos. Símbolos permitidos."
-                  )
-              , regFormField model model.userError.password_confirmation
-                  ( "Repeat Password"
-                  , "password"
-                  , "password_confirmation"
-                  , "^[\\S]{6,30}$"
-                  , "Confirme sua senha"
                   )
               , h1 [ class "form-title" ] [ text "Optional Fields" ]
               , select [ Html.Attributes.name "Gender", class "item-form", onChange (Msg.UpdateProfileRegister "gender") ]
@@ -105,7 +112,7 @@ checkLogin model =
                   , option [ value "Female" ] [ text "Female" ]
                   , option [ value "Others" ] [ text "Others" ]
                   ]
-              , regProfile model model.userError.alias_
+              , regProfile model model.userError.profile.phone
                   ( "Phone"
                   , "text"
                   , "phone"
@@ -117,7 +124,7 @@ checkLogin model =
                   , input [ pattern "([0]?[1-9]|[12][0-9]|3[01])", maxlength 2, placeholder "Day", class "date-item", onInput (Msg.UpdateDate "day") ] []
                   , input [ pattern "^(19|20)[0-9]{2}$", maxlength 4, placeholder "Year", class "date-item", onInput (Msg.UpdateDate "year") ] []
                   ]
-              , regProfile model model.userError.alias_
+              , regProfile model model.userError.profile.website
                   ( "website"
                   , "text"
                   , "website"
@@ -127,6 +134,8 @@ checkLogin model =
               , div [ class "item-form" ]
                   [ textarea [ maxlength 500, placeholder "About me", onInput (Msg.UpdateProfileRegister "about_me") ] []
                   ]
+              , p [ class (checkGeneralErrors model "icon") ] [ text (String.fromChar (Char.fromCode 9888)) ]
+              , p [ class (checkGeneralErrors model "warning") ] [ text "Existem problemas no seu registro!"]
               , button [ class "submit-button", onClick Msg.DispatchUserRegistration ] [ text "Submit" ]
               ]
           ]
@@ -137,6 +146,24 @@ checkLogin model =
             [div [class "loggedin-text"] [ text "You are already logged in!" ]]
             -- style loggedin reused from _login.scss
           ]
+
+
+checkGeneralErrors model type_ =
+    case type_ of
+      "icon" ->
+          if model.userError == emptyUserError then
+            "icon-no-errors"
+          else
+            "icon-errors"
+      "warning" ->
+          if model.userError == emptyUserError then
+            "icon-no-errors"
+          else
+            "warning-errors"
+
+      _ ->
+        "icon-no-errors"
+
 
 view : Model -> Html Msg
 view model =

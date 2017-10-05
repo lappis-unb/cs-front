@@ -12,6 +12,34 @@
     margin: 10px;
 }
 
+.item-no-errors {
+  border: none;
+}
+
+
+.item-errors {
+  border: 1px solid #dd4b39;
+  border-radius: 5px;
+}
+
+.warning-errors {
+  color: red;
+  display: flex;
+  margin-top: 3px;
+  line-height: normal;
+  margin-bottom: 20px;
+}
+
+.icon-errors {
+  display: flex;
+  color: red;
+  font-size: 3em;
+  line-height: normal;
+}
+
+.icon-no-errors {
+  display: none;
+}
 
 .select-item {
   width: 300px;

@@ -228,10 +228,7 @@ formReceiver userRegister inputModel inputValue =
         {userRegister | email = inputValue}
 
     "password" ->
-        {userRegister | password = inputValue}
-
-    "password_confirmation" ->
-        {userRegister | password_confirmation = inputValue}
+        {userRegister | password = inputValue, password_confirmation = inputValue}
 
     "school_id" ->
         {userRegister | school_id = inputValue}

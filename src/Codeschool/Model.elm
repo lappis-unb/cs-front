@@ -14,7 +14,6 @@ import Data.User exposing (..)
 import Data.Registration exposing (..)
 import Data.Login exposing (..)
 import Time exposing (Time)
-import Toast exposing (Toast)
 
 {-| Main page Model
 -}
@@ -29,7 +28,6 @@ type alias Model =
     , loadedAssets : List String
     , date : Date
     , time : Time
-    , toast : Toast String
     , auth : Auth
     , isLogged : Bool
     }
@@ -49,7 +47,6 @@ init =
     , loadedAssets = []
     , date = testDate
     , time = 0
-    , toast = Toast.initWithTransitionDelay (Time.second * 1.5)
     , auth = emptyAuth
     , isLogged = False
     }
