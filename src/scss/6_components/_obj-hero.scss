@@ -20,15 +20,18 @@
 
     &__page-green-sea {
         background-color: $color-green-sea;
+        font-family: $amatic-sc;
         color: white;
     }
 
     &__page-emerald {
         background-color: $color-emerald;
+        font-family: $amatic-sc;
     }
 
     &__page-blue {
         background-color: $color-peter-rever;
+        font-family: $amatic-sc;
     }
 }
 // BEM: Block, Element, Modifier
