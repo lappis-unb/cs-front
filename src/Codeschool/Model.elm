@@ -33,6 +33,7 @@ type alias Model =
     , toast : Toast String
     , auth : Auth
     , isLogged : Bool
+    , markdownTest : String
     }
 
 
@@ -54,6 +55,7 @@ init =
     , toast = Toast.initWithTransitionDelay (Time.second * 1.5)
     , auth = emptyAuth
     , isLogged = False
+    , markdownTest = ""
     }
 
 

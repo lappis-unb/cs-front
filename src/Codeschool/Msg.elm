@@ -3,6 +3,8 @@ module Codeschool.Msg exposing (..)
 {-| Main page messages and update function
 -}
 
+import Markdown exposing (..)
+import Html exposing (..)
 import Codeschool.Model exposing (Model, Route)
 import Codeschool.Routing exposing (parseLocation, reverse)
 import Data.Date exposing (..)
@@ -197,6 +199,19 @@ withElement el lst =
     else
         el :: lst
 
+-- Isso funciona
+toHtmlString markdownTxt =
+    Markdown.toHtml [] markdownTxt
+
+-- Testes para adequar a função ao contexto
+-- toHtmlString : String -> Html
+-- toHtmlString markdownTxt =
+--     Markdown.toHtml [] markdownTxt
+
+-- toHtmlString markdownTxt =
+--     Markdown.toHtml [] markdownTxt
+
+-- function toHtmlString(markdownTest:List (Attribute markdownTest), a: String): Html
 
 dateUserUpdate : ProfileForm -> Date -> ProfileForm
 dateUserUpdate profile date =
