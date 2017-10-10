@@ -9,7 +9,8 @@
     vertical-align: center;
     text-align: center;
     font-family: $amatic-sc;
-
+    font-weight: bold;
+    
     > i {
         font-size: 4em;
         color: $color-teal-darker;
@@ -20,6 +21,9 @@
         font-family: $amatic-sc;
         font-weight: bold;
         color: $color-teal-darker;
+    }
+    > text {
+        font-weight: bold;
     }
 }
 

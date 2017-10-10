@@ -10,6 +10,7 @@ $barcolor: #aaa;
   left: 0;
   background: $barcolor;
   border-right: 1px solid darken(#666, 0.05);
+  font-weight: bold;
 
   &__icon {
       color: #eee;
@@ -34,6 +35,9 @@ $barcolor: #aaa;
       opacity: 0;
       position: absolute;
       left: 45px;
+      font-weight: bold;
+      font-size: 14;
+      font-family: $amatic-sc;
       margin-top: 20px;
       color: white;
       height: 60px;
@@ -71,7 +75,7 @@ $barcolor: #aaa;
     &__text {
       opacity: 1;
       position: relative;
-      font-weight: 500;
+      font-weight: bold;
       left: auto;
       margin-top: 0px;
       color: black;
