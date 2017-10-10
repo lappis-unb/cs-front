@@ -64,6 +64,11 @@ questionInfo cls =
         , p [ class "question-info-card__description" ]
             [ text cls.shortDescription
             ]
+        , div [ class "classroom-info-card__toolbar" ]
+            [ button
+                [ attribute "raised" "raised" ]
+                [ text "Go" ]
+            ]
         ]
 
 
@@ -72,6 +77,11 @@ questionOne =
     { questionName = "Basic"
     , shortDescription = "Elementary programming problems."
     , icon = "sentiment_very_satisfied"
+    , div [ class "classroom-info-card__toolbar" ]
+        [ button
+            [ attribute "raised" "raised" ]
+            [ text "Go" ]
+        ]
     }
 
 
