@@ -3,23 +3,24 @@ module Page.Questions.QuestionRoot exposing (clsList, viewDetail, viewList)
 -- import Codeschool.Msg exposing (..)
 -- import Data.User exposing (User)
 
-import Codeschool.Model exposing (Model)
+import Codeschool.Model exposing (..)
 import Data.Question exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Ui.Generic exposing (container, date, emoticon)
 import Ui.Parts exposing (promoSimple, promoTable, simpleHero)
-
+import Html.Events exposing (..)
+import Codeschool.Model exposing (..)
+import Codeschool.Msg exposing (..)
 
 -- import Html.Events exposing (..)
 
 
-viewDetail : Model -> Html msg
+viewDetail : Model -> Html Msg
 viewDetail m =
     div [] [ text "#teste" ]
 
-
-viewList : List QuestionInfo -> Html msg
+viewList : List QuestionInfo -> Html Msg
 viewList m =
     let
         -- testing if there are no questions
@@ -54,7 +55,7 @@ viewList m =
         ]
 
 
-questionInfo : QuestionInfo -> Html msg
+questionInfo : QuestionInfo -> Html Msg
 questionInfo cls =
     div [ class "question-info-card" ]
         [ Ui.Generic.icon [ class "question-info-card__icon" ] cls.icon
@@ -64,11 +65,7 @@ questionInfo cls =
         , p [ class "question-info-card__description" ]
             [ text cls.shortDescription
             ]
-        , div [ class "classroom-info-card__toolbar" ]
-            [ button
-                [ attribute "raised" "raised" ]
-                [ text "Go" ]
-            ]
+        , span [ onClick (ChangeRoute (QuestionList "questions")), class "mobile-button__item" ] [ h1 [class "mobile-button__fonts"] [text "Acessar"] ]
         ]
 
 
@@ -77,11 +74,6 @@ questionOne =
     { questionName = "Basic"
     , shortDescription = "Elementary programming problems."
     , icon = "sentiment_very_satisfied"
-    , div [ class "classroom-info-card__toolbar" ]
-        [ button
-            [ attribute "raised" "raised" ]
-            [ text "Go" ]
-        ]
     }
 
 
