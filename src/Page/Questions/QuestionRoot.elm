@@ -60,7 +60,7 @@ questionInfo cls =
     div [ class "question-info-card", onClick (ChangeRoute (QuestionList "base")) ]
         [ Ui.Generic.icon [ class "question-info-card__icon" ] cls.icon
         , h1 [ class "question-info-card__title" ]
-            [ text cls.questionName
+            [ text cls.title
             ]
         , p [ class "question-info-card__description" ]
             [ text cls.shortDescription
@@ -70,45 +70,51 @@ questionInfo cls =
 
 questionOne : QuestionInfo
 questionOne =
-    { questionName = "Basic"
+    { title = "Basic"
     , shortDescription = "Elementary programming problems."
     , icon = "sentiment_very_satisfied"
+    , slug = "basic"
     }
 
 
 questionTwo : QuestionInfo
 questionTwo =
-    { questionName = "Conditionals"
+    { title = "Conditionals"
     , shortDescription = "Conditional flow control (if/else)."
     , icon = "code"
+    , slug = "conditionals"
     }
 
 questionThree : QuestionInfo
 questionThree =
-    { questionName = "Loops"
+    { title = "Loops"
     , shortDescription = "Iterations with for/while commands"
     , icon = "loop"
+    , slug = "loops"
     }
 
 questionFour : QuestionInfo
 questionFour =
-    { questionName = "Functions"
+    { title = "Functions"
     , shortDescription = "Organize code using functions."
     , icon = "functions"
+    , slug = "functions"
     }
 
 questionFive : QuestionInfo
 questionFive =
-    { questionName = "Files"
+    { title = "Files"
     , shortDescription = "Open, process and write files."
     , icon = "insert_drive_file"
+    , slug = "files"
     }
 
 questionSix : QuestionInfo
 questionSix =
-    { questionName = "Lists"
+    { title = "Lists"
     , shortDescription = "Linear data structures."
     , icon = "list"
+    , slug = "list"
     }
 
 clsList : List QuestionInfo

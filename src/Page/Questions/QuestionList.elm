@@ -52,7 +52,7 @@ questionInfo cls =
     div [ class "question-card", onClick (ChangeRoute ( Question "base" "code" )) ]
         [ Ui.Generic.icon [ class "question-info-card__icon" ] cls.icon
         , h1 [ class "question-card__title" ]
-            [ text cls.questionName
+            [ text cls.title
             ]
         , p [ class "question-card__description" ]
             [ text cls.shortDescription
@@ -62,31 +62,35 @@ questionInfo cls =
 
 questionOne : QuestionInfo
 questionOne =
-    { questionName = "Questão mais facil"
+    { title = "Questão mais facil"
     , shortDescription = "Questão mais facil, se n conseguir fazer vaza."
     , icon = "sentiment_very_satisfied"
+    , slug = "veryeasy"
     }
 
 
 questionTwo : QuestionInfo
 questionTwo =
-    { questionName = "Segunda mais facil"
+    { title = "Segunda mais facil"
     , shortDescription = "Questão facil também."
     , icon = "code"
+    , slug = "easy"
     }
 
 questionThree : QuestionInfo
 questionThree =
-    { questionName = "Questão dificil"
+    { title = "Questão dificil"
     , shortDescription = "Essa é hard"
     , icon = "loop"
+    , slug = "hard"
     }
 
 questionFour : QuestionInfo
 questionFour =
-    { questionName = "Questão dificil"
+    { title = "Questão dificil"
     , shortDescription = "Essa é hard"
     , icon = "loop"
+    , slug = "hard2"
     }
 
 
