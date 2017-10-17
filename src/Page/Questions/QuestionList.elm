@@ -5,11 +5,14 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Ui.Generic exposing (container, date, emoticon)
 import Ui.Parts exposing (promoSimple, promoTable, simpleHero)
+import Html.Events exposing (..)
+import Codeschool.Model exposing (..)
+import Codeschool.Msg exposing (..)
 
 questions_type = "Basic questions"
 questions_type_description = "Easy Easy Maaann, mostly basic questions"
 
-viewList : List QuestionInfo -> Html msg
+viewList : List QuestionInfo -> Html Msg
 viewList m =
     let
         -- testing if there are no questions
@@ -44,7 +47,7 @@ viewList m =
         ]
 
 
-questionInfo : QuestionInfo -> Html msg
+questionInfo : QuestionInfo -> Html Msg
 questionInfo cls =
     div [ class "question-card" ]
         [ Ui.Generic.icon [ class "question-info-card__icon" ] cls.icon
@@ -54,6 +57,7 @@ questionInfo cls =
         , p [ class "question-card__description" ]
             [ text cls.shortDescription
             ]
+        , span [ onClick (ChangeRoute ( Question "base" "code" )), class "mobile-button__item" ] [ h1 [class "mobile-button__fonts"] [text "Acessar"] ]
         ]
 
 

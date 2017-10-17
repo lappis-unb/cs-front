@@ -75,8 +75,8 @@ baseReverse route =
         QuestionList st ->
             "questions/" ++ st
 
-        Question a b ->
-            "code/" ++ a ++ "/" ++ b
+        Question questionList question ->
+            "questions/" ++ questionList ++ "/" ++ question
 
         Social ->
             "social"
