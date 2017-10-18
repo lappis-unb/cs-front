@@ -57,7 +57,7 @@ questionInfo cls =
         , p [ class "question-card__description" ]
             [ text cls.shortDescription
             ]
-        , span [ onClick (ChangeRoute ( Question "base" "code" )), class "mobile-button__item" ] [ h1 [class "mobile-button__fonts"] [text "Acessar"] ]
+        , span [ onClick (ChangeRoute ( Question "base" "code" )), class "access-button" ] [ h1 [class "access-button__fonts"] [text "Acessar"] ]
         ]
 
 
