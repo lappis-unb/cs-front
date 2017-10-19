@@ -49,7 +49,7 @@ viewList m =
 
 questionInfo : QuestionInfo -> Html Msg
 questionInfo cls =
-    div [ class "question-card" ]
+    div [ class "question-card", onClick (ChangeRoute ( Question "base" "code" )) ]
         [ Ui.Generic.icon [ class "question-info-card__icon" ] cls.icon
         , h1 [ class "question-card__title" ]
             [ text cls.questionName
@@ -57,7 +57,6 @@ questionInfo cls =
         , p [ class "question-card__description" ]
             [ text cls.shortDescription
             ]
-        , span [ onClick (ChangeRoute ( Question "base" "code" )), class "access-button" ] [ h1 [class "access-button__fonts"] [text "Acessar"] ]
         ]
 
 
