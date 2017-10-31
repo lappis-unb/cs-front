@@ -1,5 +1,5 @@
 .simple-hero {
-    background-color: $color-salmon;
+    background-color: $color-nephiritis;
     width: 100%;
     color: white;
 
@@ -8,23 +8,29 @@
         font-family: $amatic-sc;
         font-weight: bold;
         font-size: 3.2em;
+        color: $color-dark-gray;
     }
 
-    &__description > *:nth-child(odd) {
-        color: lighten($color-primary-tint, 0.9);
+    &__description {
+        font-family: $roboto;
+        font-size: 1.3em;
+        color: $color-dark-gray;
     }
 
-    &__page-red {
-        background-color: $color-salmon;
+    &__page-green-sea {
+        background-color: $color-green-sea;
+        font-family: $amatic-sc;
         color: white;
     }
 
-    &__page-blue {
-        background-color: $color-primary-tint;
+    &__page-emerald {
+        background-color: $color-emerald;
+        font-family: $amatic-sc;
     }
 
-    &__page-orange {
-        background-color: #ce6b14;
+    &__page-blue {
+        background-color: $color-peter-rever;
+        font-family: $amatic-sc;
     }
 }
 // BEM: Block, Element, Modifier

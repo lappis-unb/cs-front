@@ -42,14 +42,14 @@ viewList m =
                     fab_ :: listing
     in
     div []
-        [ simpleHero questions_type questions_type_description "simple-hero__page-blue"
+        [ simpleHero questions_type questions_type_description "simple-hero__page-emerald"
         , div [] children
         ]
 
 
 questionInfo : QuestionInfo -> Html Msg
 questionInfo cls =
-    div [ class "question-card" ]
+    div [ class "question-card", onClick (ChangeRoute ( Question "base" "code" )) ]
         [ Ui.Generic.icon [ class "question-info-card__icon" ] cls.icon
         , h1 [ class "question-card__title" ]
             [ text cls.questionName
@@ -57,7 +57,6 @@ questionInfo cls =
         , p [ class "question-card__description" ]
             [ text cls.shortDescription
             ]
-        , span [ onClick (ChangeRoute ( Question "base" "code" )), class "mobile-button__item" ] [ h1 [class "mobile-button__fonts"] [text "Acessar"] ]
         ]
 
 
