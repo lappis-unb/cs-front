@@ -22,7 +22,7 @@ import Page.Actions
 import Page.Register
 import Page.Login
 import Ui.Layout
-
+import Data.Question exposing (..)
 
 getRouteView : Model -> Html Msg
 getRouteView model =
@@ -55,7 +55,7 @@ getRouteView model =
             Page.Questions.QuestionList.viewList Page.Questions.QuestionList.clsList
 
         Question string slug ->
-            Page.Questions.Code.view model
+            Page.Questions.Code.viewDetail Page.Questions.Code.question
 
         QuestionRoot ->
             Page.Questions.QuestionRoot.viewList Page.Questions.QuestionRoot.clsList

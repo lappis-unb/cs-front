@@ -3,6 +3,8 @@ module Codeschool.Msg exposing (..)
 {-| Main page messages and update function
 -}
 
+import Markdown exposing (..)
+import Html exposing (..)
 import Codeschool.Model exposing (Model, Route)
 import Codeschool.Routing exposing (parseLocation, reverse)
 import Data.Date exposing (..)
@@ -196,6 +198,9 @@ withElement el lst =
         lst
     else
         el :: lst
+
+toHtmlString markdownTxt =
+    Markdown.toHtml [] markdownTxt
 
 
 dateUserUpdate : ProfileForm -> Date -> ProfileForm

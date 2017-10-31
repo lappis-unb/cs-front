@@ -3,57 +3,66 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 50%;
+    width: 75%;
     margin: 0px auto;
 }
 
 .item-form {
-    width: 300px;
+    width: 400px;
     margin: 10px;
+    font-family: "Amatic SC";
+    font-size: 1.3em;
+    font-weight: bold;
+
 }
 
-
 .select-item {
-  width: 300px;
+    width: 300px;
 }
 
 .disabled-item {
-  display: none;
+    display: none;
 }
 
-
-
 .date-form {
-  display: flex;
-  flex-direction: row;
-  width: 300px;
-  margin: 10px;
-  justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    width: 300px;
+    margin: 10px;
+    justify-content: space-between;
+    font-family: "Amatic SC";
+    font-size: 1.2em;
+    font-weight: bold;
+
+
 }
 
 .date-month {
-  width: 90px;
+    width: 90px;
 }
 
 .date-item {
-  width: 90px;
-  height: 47px;
-  align-self: center;
+    width: 90px;
+    height: 47px;
+    align-self: center;
 }
 
 .form-title {
     font-family: "Amatic SC";
     font-size: 3.5em;
     font-weight: bold;
-    margin-right: 20%;
 }
 
 .submit-button {
     width: 30%;
-    height: 40px;
+    height: 50px;
     margin: 10px;
-    background-color: $color-teal;
+    background-color: $color-green;
     color: white;
     border-radius: 5px;
     width: 50%;
+    font-family: "Amatic SC";
+    font-size: 1.2em;
+    font-weight: bold;
+
 }

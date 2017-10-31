@@ -33,6 +33,7 @@ type alias Model =
     , toast : Toast String
     , auth : Auth
     , isLogged : Bool
+    , markdownToString : String
     }
 
 
@@ -54,6 +55,13 @@ init =
     , toast = Toast.initWithTransitionDelay (Time.second * 1.5)
     , auth = emptyAuth
     , isLogged = False
+    , markdownToString = """
+                # Basic
+                Codifique um software receba o ano de nascimento de uma
+                pessoa e o ano atual. Calcule e mostre:
+                - a) A idade dessa pessoa.
+                - b) Quantos anos essa pessoa terá  em 2018.
+                """
     }
 
 
