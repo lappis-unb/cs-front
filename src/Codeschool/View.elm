@@ -22,7 +22,6 @@ import Page.Actions
 import Page.Register
 import Page.Login
 import Ui.Layout
-import Data.Question exposing (..)
 
 getRouteView : Model -> Html Msg
 getRouteView model =
