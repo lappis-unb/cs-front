@@ -1,6 +1,6 @@
 module Forms.Contrib.FieldForm
     exposing
-        ( FieldFields(..)
+        ( FieldFields(field)
         , FieldForm
         , FieldFormMsg
         , field
