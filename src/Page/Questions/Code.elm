@@ -11,7 +11,8 @@ import Html.Attributes exposing (..)
 import Ui.Parts exposing (promoSimple, promoTable, simpleHero)
 
 -- import Html.Attributes exposing (..)
--- import Html.Events exposing (..)
+import Html.Events exposing (..)
+import Ace
 
 
 viewDetail : CodeQuestion -> Html msg
@@ -35,8 +36,7 @@ pessoa e o ano atual. Calcule e mostre:
               , option [ value "Java" ] [ text "Java" ]
               ]
           , div [ class "item-question" ]
-              [ textarea [ class "item-question", maxlength 1000, placeholder "Insert your code" ] []
-              ]
+              [ aceEditor]
           , button [ class "send-button" ] [ text "Send to evaluation" ]
         ]
 
@@ -56,3 +56,12 @@ question =
     , selectedLanguage = ""
     , answer = ""
     }
+
+
+aceEditor : Html msg
+aceEditor =
+   Ace.toHtml
+      [ Ace.theme "monokai"
+      , Ace.mode "lua"
+      , Ace.value ""
+      ] []

@@ -8,7 +8,6 @@
   },
   "author": "",
   "license": "GPL-3.0",
-  "dependencies": {},
   "devDependencies": {
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.4",
