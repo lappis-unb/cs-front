@@ -1,3 +1,6 @@
+<p align="center"><img width="300"src="https://codeschool.lappis.rocks/static/img/logo.svg"></p>
+
+
 # CodeSchool Frontend SPA
 
 The CodeScool frontend SPA is based on and implemented in Elm. Before installing CodeScool completely, you must first install some dependencies of the project. The installation and implementation instructions for the project are as follows.
