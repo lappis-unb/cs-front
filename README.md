@@ -12,28 +12,45 @@ The CodeScool frontend SPA is based on and implemented in Elm. Before installing
 Node.js is a JavaScript interpreter that works on the server side. Its goal is to assist in the creation of highly scalable applications, with codes capable of handling simultaneous connections on a single machine.
 First install a version greater than 7, we indicate that you install version 8.4.0.: [Install Node.js](https://nodejs.org/en/download/package-manager/)
 
-Next you should install a package manager of JavaScript, we advise the installation of **yarn** promising to be faster than **npm** and is a project open source: 
+Next you should install a package manager of JavaScript, we advise the installation of **yarn** promising to be faster than **npm** and is a project open source:
 
 You should only install a management pack choosing between the **yarn** or **npm**:
 
-[install Yarn](https://yarnpkg.com/lang/en/docs/install/)
+[Install Yarn](https://yarnpkg.com/lang/en/docs/install/)
 
-[install npm](https://docs.npmjs.com/cli/install)
+[Install Npm](https://docs.npmjs.com/cli/install)
 
 
-## Dev settup and prod
+## Development setup
 
-After the install just run:
+###  Yarn Install
+After the install of dependencies you need to install yarn packages using this command:
 
 ```bash
 yarn install
+```
+An then run elm application with:
+
+```bash
 yarn dev
 ```
-or
+
+###  Npm Install
+If you prefer run with npm, use the following commands to install npm packages:
+
 ```bash
 npm install
+```
+An then run elm application with:
+
+```bash
 npm dev
 ```
+
+**To use the application** in Development mode, just open on ```localhost:4000```
+
+
+## Production setup
 
 For production just replace **dev** for **buid**:
 
