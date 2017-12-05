@@ -23,12 +23,15 @@ You should only install a management pack choosing between the **yarn** or **npm
 
 [Install Npm](https://docs.npmjs.com/cli/install)
 
-[Install elm-install](https://github.com/gdotdesign/elm-github-install)
-
-For the perfect functionality of Ace Editor in CodeSchool, is necessary install elm-install dependency manager and run it to install the software external dependences
-
-
 ## Development setup
+
+Before run step of ```Yarn Install``` or ```Npm Install``` follow the steps off ```Install elm-install```.
+
+###  Install elm-install
+
+For the perfect functionality of Ace Editor in CodeSchool, is necessary install elm-install dependency manager and run it to install the software external dependences.
+
+[Install elm-install](https://github.com/gdotdesign/elm-github-install)
 
 ###  Yarn Install
 After the install of dependencies you need to install yarn packages using this command:
