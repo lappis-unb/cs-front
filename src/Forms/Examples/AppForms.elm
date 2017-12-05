@@ -6,7 +6,7 @@ import Forms.Form as Form exposing (..)
 import Forms.JsonDecode exposing (..)
 import Forms.Validation exposing (..)
 import Forms.Types exposing (..)
-import Html exposing (Html, code, div, h2, pre, text)
+import Html exposing (Html, div, h2, text)
 import Html.Attributes exposing (style)
 
 

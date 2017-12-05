@@ -1,4 +1,4 @@
-module Codeschool.Assets exposing (..)
+module Codeschool.Assets exposing (url)
 
 {-| Server-side assets. Controls where information is obtained on the server.
 -}

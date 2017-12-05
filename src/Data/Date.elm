@@ -1,4 +1,4 @@
-module Data.Date exposing (..)
+module Data.Date exposing (Date, testDate, dateDecoder, toJson)
 
 {-| Represents date objects in Elm
 -}
