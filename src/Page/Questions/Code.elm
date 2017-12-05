@@ -1,5 +1,6 @@
 module Page.Questions.Code exposing (viewDetail, question)
-import Codeschool.Msg exposing (..)
+import Codeschool.Msg exposing (Msg)
+import Codeschool.Msg as Msg exposing (Msg)
 import Data.Question exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -11,9 +12,8 @@ import Dict
 import Html.Events exposing (..)
 import Ace
 
-viewDetail : CodeQuestion -> Html msg
+viewDetail : CodeQuestion -> Html Msg
 viewDetail cls =
-
     div []
         [ simpleHero question.questionInfo.title "" "simple-hero__page-blue"
         , div [ class "question-description" ]
@@ -36,6 +36,7 @@ viewDetail cls =
           , div [ class "item-question"]
               [ aceEditor "javascript"]
           , button [ class "send-button" ] [ text "Send to evaluation" ]
+          , button [ class "send-button", onClick Msg.GetLanguagesSuported ] [ text "Get Languanges" ]
         ]
 
 question : CodeQuestion
