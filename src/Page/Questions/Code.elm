@@ -14,7 +14,7 @@ import Ace
 
 viewDetail : CodeQuestion -> Html Msg
 viewDetail cls =
-    div []
+    div [ onClick Msg.DispatchLogin ]
         [ simpleHero question.questionInfo.title "" "simple-hero__page-blue"
         , div [ class "question-description" ]
             [
@@ -36,7 +36,6 @@ viewDetail cls =
           , div [ class "item-question"]
               [ aceEditor "javascript"]
           , button [ class "send-button" ] [ text "Send to evaluation" ]
-          , button [ class "send-button", onClick Msg.GetLanguagesSuported ] [ text "Get Languanges" ]
         ]
 
 question : CodeQuestion
