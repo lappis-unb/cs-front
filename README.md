@@ -23,6 +23,8 @@ You should only install a management pack choosing between the **yarn** or **npm
 
 [Install Npm](https://docs.npmjs.com/cli/install)
 
+[Install elm-install](https://github.com/gdotdesign/elm-github-install)
+
 
 ## Development setup
 
