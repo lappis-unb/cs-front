@@ -12,8 +12,8 @@ import Forms.Types
         )
 import Forms.Validation as Validation exposing (Validation(..), Validator(..))
 import Forms.Value as Value exposing (Value(..), jsonDecoder)
-import Json.Decode as JD exposing (Decoder, andThen, bool, fail, float, int, list, nullable, oneOf, string, succeed, value)
-import Json.Decode.Pipeline as Pipeline exposing (decode, hardcoded, optional, required)
+import Json.Decode as JD exposing (Decoder, andThen, bool, fail, list, nullable, string, succeed)
+import Json.Decode.Pipeline as Pipeline exposing (optional, required)
 import Maybe
 
 
@@ -102,11 +102,11 @@ validator =
                     Validation.fromInfo ( name, msg, opts )
             in
             case val of
-                Ok x ->
-                    succeed x
+                Ok y ->
+                    succeed y
 
                 Err _ ->
-                    fail ("invalid validator: " ++ toString x)
+                    fail ("invalid validator: " ++ toString y)
     in
     JD.keyValuePairs jsonDecoder |> andThen convert
 

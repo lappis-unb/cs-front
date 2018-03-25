@@ -3,12 +3,15 @@ module Codeschool.Msg exposing (..)
 {-| Main page messages and update function
 -}
 
+import Markdown exposing (..)
+import Html exposing (..)
 import Codeschool.Model exposing (Model, Route)
 import Codeschool.Routing exposing (parseLocation, reverse)
 import Data.Date exposing (..)
 import Data.User exposing (..)
 import Data.Registration exposing (..)
 import Data.Login exposing (..)
+import Data.ProgrammingLanguage exposing (..)
 import Http exposing (..)
 import Json.Decode exposing (string)
 import Navigation exposing (Location, back, newUrl)
@@ -25,11 +28,14 @@ type Msg
     -- Dispatchs
     | DispatchUserRegistration
     | DispatchLogin
+    | GetLanguagesSuported
     -- Responses
     | GetRegistrationResponse (Result Http.Error ExpectRegisterResponse)
     | GetLoginResponse (Result Http.Error Auth)
+    | GetLanguagesSuportedResponse (Result Http.Error ProgrammingLanguage)
     | LoginAfterRegistration
     -- Form handling
+    -- | FormMsg FormMsg2
     | UpdateUserRegister String String
     | UpdateProfileRegister String String
     | UpdateDate String String
@@ -72,8 +78,18 @@ update msg model =
             data = sendLoginData model.userLogin
           in
             (model, data)
+        GetLanguagesSuported ->
+          let
+            data = getLanguagesData model
+          in
+            (model, data)
 
 -- OK Responses
+        GetLanguagesSuportedResponse (Ok data) ->
+          Debug.log("Pegou languages")
+          Debug.log(toString model)
+          (model, Cmd.none)
+
         GetLoginResponse (Ok data) ->
           Debug.log("Logado com sucesso")
             { model | auth = {user = data.user, token = data.token}, isLogged = True} ! []
@@ -99,6 +115,10 @@ update msg model =
 
 
 -- Errors Responses
+        GetLanguagesSuportedResponse (Result.Err _) ->
+          Debug.log("Erro Ao pegar languages")
+          (model, Cmd.none)
+
         GetLoginResponse (Result.Err _) ->
           Debug.log("Erro Geral GetLogin")
           (model, Cmd.none)
@@ -183,6 +203,9 @@ withElement el lst =
         lst
     else
         el :: lst
+
+toHtmlString markdownTxt =
+    Markdown.toHtml [] markdownTxt
 
 
 dateUserUpdate : ProfileForm -> Date -> ProfileForm
@@ -325,6 +348,22 @@ sendRegistrationData userRegister =
 --         Debug.log("aqui????????" ++ "Token:" ++ model.auth.token )
 --         profileUpdateRequest |> Http.send GetProfileResponse
 
+getLanguagesData : Model -> Cmd Msg
+getLanguagesData model =
+    let
+        getLanguagesRequest =
+            Http.request
+                { body = Http.emptyBody
+                , expect = Http.expectJson programmingLanguageDecoder
+                , headers = [Http.header "Token" ("JWT " ++ model.auth.token)]
+                , method = "GET"
+                , timeout = Nothing
+                , url = "http://localhost:8000/api/programming-languages/"
+                , withCredentials = False
+                }
+    in
+        Debug.log("aqui????????" ++ model.suportedLanguanges.name )
+        getLanguagesRequest |> Http.send GetLanguagesSuportedResponse
 
 andThen : Msg -> ( Model, Cmd Msg ) -> ( Model, Cmd Msg )
 andThen msg ( model, cmd ) =

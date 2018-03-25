@@ -11,6 +11,7 @@ module Codeschool.Model
 import Data.Classroom exposing (Classroom, ClassroomInfo)
 import Data.Date exposing (..)
 import Data.User exposing (..)
+import Data.ProgrammingLanguage exposing (..)
 import Data.Registration exposing (..)
 import Data.Login exposing (..)
 import Time exposing (Time)
@@ -32,6 +33,8 @@ type alias Model =
     , toast : Toast String
     , auth : Auth
     , isLogged : Bool
+    , markdownToString : String
+    , suportedLanguanges : ProgrammingLanguage
     }
 
 
@@ -52,6 +55,14 @@ init =
     , toast = Toast.initWithTransitionDelay (Time.second * 1.5)
     , auth = emptyAuth
     , isLogged = False
+    , suportedLanguanges = emptyProgrammingLanguages
+    , markdownToString = """
+                # Basic
+                Codifique um software receba o ano de nascimento de uma
+                pessoa e o ano atual. Calcule e mostre:
+                - a) A idade dessa pessoa.
+                - b) Quantos anos essa pessoa terá  em 2018.
+                """
     }
 
 
@@ -79,8 +90,9 @@ type Route
     | Progress
     | Learn
     | Help
-    | QuestionList
-    | Question Id
+    | QuestionRoot
+    | QuestionList Slug
+    | Question Slug Slug
     | Social
     | Profile
     | Logout

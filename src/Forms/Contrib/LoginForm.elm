@@ -1,6 +1,6 @@
 module Forms.Contrib.LoginForm
     exposing
-        ( LoginFields(..)
+        ( LoginFields(login, loginByEmail, loginByUsername)
         , LoginForm
         , LoginFormMsg
         , LoginFormTypes
